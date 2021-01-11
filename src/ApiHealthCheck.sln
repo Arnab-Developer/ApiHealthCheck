@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiHealthCheck.Lib", "ApiHealthCheck.Lib\ApiHealthCheck.Lib.csproj", "{61637051-C4AA-4EDA-AD32-2CECE432D99A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiHealthCheck.Test", "ApiHealthCheck.Test\ApiHealthCheck.Test.csproj", "{126A1B7E-78B2-442F-8D86-91D655F330E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiHealthCheck.Console", "ApiHealthCheck.Console\ApiHealthCheck.Console.csproj", "{01E1C28C-538B-4D88-80D4-4BBA24DD717D}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61637051-C4AA-4EDA-AD32-2CECE432D99A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61637051-C4AA-4EDA-AD32-2CECE432D99A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61637051-C4AA-4EDA-AD32-2CECE432D99A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61637051-C4AA-4EDA-AD32-2CECE432D99A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{126A1B7E-78B2-442F-8D86-91D655F330E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{126A1B7E-78B2-442F-8D86-91D655F330E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{126A1B7E-78B2-442F-8D86-91D655F330E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{126A1B7E-78B2-442F-8D86-91D655F330E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01E1C28C-538B-4D88-80D4-4BBA24DD717D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E1C28C-538B-4D88-80D4-4BBA24DD717D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E1C28C-538B-4D88-80D4-4BBA24DD717D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E1C28C-538B-4D88-80D4-4BBA24DD717D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
