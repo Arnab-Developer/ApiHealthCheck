@@ -1,5 +1,5 @@
 # Api health check
 
-![.NET](https://github.com/Arnab-Developer/api-health-check/workflows/.NET/badge.svg?branch=master)
+![.NET](https://github.com/Arnab-Developer/api-health-check/workflows/.NET/badge.svg?branch=main)
 
 Background task application with .NET (with DI, logging, configuration) to check api health.
