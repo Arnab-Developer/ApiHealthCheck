@@ -5,6 +5,10 @@ using ApiHealthCheck.Lib.Credentials;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("ApiHealthCheck.Test")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 using IHost host = CreateHostBuilder().Build();
 await host.StartAsync();

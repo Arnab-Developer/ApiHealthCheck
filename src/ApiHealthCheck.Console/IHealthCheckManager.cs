@@ -9,6 +9,6 @@ namespace ApiHealthCheck.Console
 
         ProductApiCredential Credential { get; }
 
-        void PrintHealthCheckResult();
+        string LogHealthCheckResult();
     }
 }

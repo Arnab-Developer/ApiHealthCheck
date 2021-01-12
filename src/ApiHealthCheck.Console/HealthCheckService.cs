@@ -1,7 +1,5 @@
-﻿using ApiHealthCheck.Console.Loggers;
-using ApiHealthCheck.Console.Settings;
+﻿using ApiHealthCheck.Console.Settings;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Threading;
@@ -14,15 +12,12 @@ namespace ApiHealthCheck.Console
         private Timer? _timer;
         private readonly ExecutionSettings _executionSettings;
         private readonly IHealthCheckManager _healthCheckManager;
-        private readonly ILogger<HealthCheckService> _logger;
 
         public HealthCheckService(
             IHealthCheckManager healthCheckManager,
-            IOptionsMonitor<ExecutionSettings> executionSettingsOptionsMonitor,
-            ILogger<HealthCheckService> logger)
+            IOptionsMonitor<ExecutionSettings> executionSettingsOptionsMonitor)
         {
             _healthCheckManager = healthCheckManager;
-            _logger = logger;
             _executionSettings = executionSettingsOptionsMonitor.CurrentValue;
         }
 
@@ -35,14 +30,7 @@ namespace ApiHealthCheck.Console
 
         private void DoWork(object? state)
         {
-            try
-            {
-                _healthCheckManager.PrintHealthCheckResult();
-            }
-            catch (Exception ex)
-            {
-                _logger.HealthCheckError(ex);
-            }
+            _healthCheckManager.LogHealthCheckResult();
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

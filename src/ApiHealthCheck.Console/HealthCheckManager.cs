@@ -4,6 +4,8 @@ using ApiHealthCheck.Lib;
 using ApiHealthCheck.Lib.Credentials;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Text;
 
 namespace ApiHealthCheck.Console
 {
@@ -30,19 +32,29 @@ namespace ApiHealthCheck.Console
 
         ProductApiCredential IHealthCheckManager.Credential => _credential;
 
-        void IHealthCheckManager.PrintHealthCheckResult()
+        string IHealthCheckManager.LogHealthCheckResult()
         {
-            string productApiStatusMessage = GetProductApiStatusMessage();
-            System.Console.WriteLine(productApiStatusMessage);
+            StringBuilder apiStatusMessage = new(string.Empty);
+            apiStatusMessage.Append(GetProductApiStatusMessage());
+            _logger.ApiStatusMessage(apiStatusMessage.ToString());
+            return apiStatusMessage.ToString();
         }
 
         private string GetProductApiStatusMessage()
         {
             _logger.ProductHealthCheckResultStart();
-            bool isProductApiHealthy = _healthCheck.IsApiHealthy(_urls.ProductApiUrl, _credential);
-            string productApiStatusMessage = isProductApiHealthy ? "OK" : "Error";
-            _logger.ProductHealthCheckResultEnd();
-            return $"Product api status is: {productApiStatusMessage}";
+            try
+            {
+                bool isProductApiHealthy = _healthCheck.IsApiHealthy(_urls.ProductApiUrl, _credential);
+                string productApiStatusMessage = isProductApiHealthy ? "OK" : "Error";
+                _logger.ProductHealthCheckResultEnd();
+                return $"Product api status is: {productApiStatusMessage}";
+            }
+            catch (Exception ex)
+            {
+                _logger.HealthCheckError("product api", ex);
+                return $"Product api status is: Error";
+            }
         }
     }
 }
