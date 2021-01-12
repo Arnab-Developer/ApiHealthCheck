@@ -13,6 +13,7 @@ namespace ApiHealthCheck.Test
     public class HealthCheckManagerTest
     {
         private readonly Mock<IHealthCheck> _healthCheckMock;
+        private readonly Mock<ISendMail> _sendMailMock;
         private readonly Mock<IOptionsMonitor<Urls>> _urlsOptionMonitorMock;
         private readonly Mock<IOptionsMonitor<ProductApiCredential>> _productApiCredentialOptionMonitorMock;
         private readonly Mock<ILogger<HealthCheckManager>> _healthCheckManagerLoggerMock;
@@ -21,6 +22,7 @@ namespace ApiHealthCheck.Test
         public HealthCheckManagerTest()
         {
             _healthCheckMock = new Mock<IHealthCheck>();
+            _sendMailMock = new Mock<ISendMail>();
             _urlsOptionMonitorMock = new Mock<IOptionsMonitor<Urls>>();
             _productApiCredentialOptionMonitorMock = new Mock<IOptionsMonitor<ProductApiCredential>>();
             _healthCheckManagerLoggerMock = new Mock<ILogger<HealthCheckManager>>();
@@ -44,8 +46,13 @@ namespace ApiHealthCheck.Test
                 .Returns(true)
                 .Verifiable();
 
+            _sendMailMock
+                .Setup(s => s.SendMailToCustomer(It.IsAny<string>()))
+                .Verifiable();
+
             _healthCheckManager = new HealthCheckManager(
                 _healthCheckMock.Object,
+                _sendMailMock.Object,
                 _urlsOptionMonitorMock.Object,
                 _productApiCredentialOptionMonitorMock.Object,
                 _healthCheckManagerLoggerMock.Object);
@@ -53,7 +60,8 @@ namespace ApiHealthCheck.Test
             string apiStatusMessage = _healthCheckManager.LogHealthCheckResult();
 
             _healthCheckMock.Verify();
-            Assert.Equal("Product api status is: OK", apiStatusMessage);
+            _sendMailMock.Verify();
+            Assert.Equal("Product api status is: OK\n", apiStatusMessage);
         }
 
         [Fact]
@@ -74,8 +82,13 @@ namespace ApiHealthCheck.Test
                 .Throws<ArgumentException>()
                 .Verifiable();
 
+            _sendMailMock
+                .Setup(s => s.SendMailToCustomer(It.IsAny<string>()))
+                .Verifiable();
+
             _healthCheckManager = new HealthCheckManager(
                 _healthCheckMock.Object,
+                _sendMailMock.Object,
                 _urlsOptionMonitorMock.Object,
                 _productApiCredentialOptionMonitorMock.Object,
                 _healthCheckManagerLoggerMock.Object);
@@ -83,7 +96,8 @@ namespace ApiHealthCheck.Test
             string apiStatusMessage = _healthCheckManager.LogHealthCheckResult();
 
             _healthCheckMock.Verify();
-            Assert.Equal("Product api status is: Error", apiStatusMessage);
+            _sendMailMock.Verify();
+            Assert.Equal("Product api status is: Error\n", apiStatusMessage);
         }
     }
 }

@@ -8,22 +8,27 @@ namespace ApiHealthCheck.Console.Loggers
         private static readonly Action<ILogger, Exception> _productHealthCheckResultStart = LoggerMessage.Define(
             LogLevel.Debug,
             new EventId(1, nameof(ProductHealthCheckResultStart)),
-            "Product health check result start");
+            "Product health check result start.");
 
         private static readonly Action<ILogger, Exception> _productHealthCheckResultEnd = LoggerMessage.Define(
             LogLevel.Debug,
             new EventId(1, nameof(ProductHealthCheckResultEnd)),
-            "Product health check result end");
+            "Product health check result end.");
 
         private static readonly Action<ILogger, string, Exception> _healthCheckError = LoggerMessage.Define<string>(
             LogLevel.Error,
             new EventId(1, nameof(HealthCheckError)),
-            "Health check error in {apiName}");
+            "Health check error in {apiName}.");
 
         private static readonly Action<ILogger, string, Exception> _apiStatusMessage = LoggerMessage.Define<string>(
             LogLevel.Information,
             new EventId(1, nameof(ApiStatusMessage)),
-            "Api status message {apiStatusMessage}");
+            "{apiStatusMessage}.");
+
+        private static readonly Action<ILogger, Exception> _mailSendingError = LoggerMessage.Define(
+            LogLevel.Error,
+            new EventId(1, nameof(MailSendingError)),
+            "Mail sending error.");
 
         public static void ProductHealthCheckResultStart(this ILogger<HealthCheckManager> logger)
         {
@@ -43,6 +48,11 @@ namespace ApiHealthCheck.Console.Loggers
         public static void ApiStatusMessage(this ILogger<HealthCheckManager> logger, string apiStatusMessage)
         {
             _apiStatusMessage(logger, apiStatusMessage, null);
+        }
+
+        public static void MailSendingError(this ILogger<HealthCheckManager> logger, Exception ex)
+        {
+            _mailSendingError(logger, ex);
         }
     }
 }

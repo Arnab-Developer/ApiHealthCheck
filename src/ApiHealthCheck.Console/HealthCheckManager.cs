@@ -12,17 +12,20 @@ namespace ApiHealthCheck.Console
     internal class HealthCheckManager : IHealthCheckManager
     {
         private readonly IHealthCheck _healthCheck;
+        private readonly ISendMail _sendMail;
         private readonly ILogger<HealthCheckManager> _logger;
         private readonly Urls _urls;
         private readonly ProductApiCredential _credential;
 
         public HealthCheckManager(
             IHealthCheck healthCheck,
+            ISendMail sendMail,
             IOptionsMonitor<Urls> urlsOptionsMonitor,
             IOptionsMonitor<ProductApiCredential> credentialOptionsMonitor,
             ILogger<HealthCheckManager> logger)
         {
             _healthCheck = healthCheck;
+            _sendMail = sendMail;
             _logger = logger;
             _urls = urlsOptionsMonitor.CurrentValue;
             _credential = credentialOptionsMonitor.CurrentValue;
@@ -35,8 +38,20 @@ namespace ApiHealthCheck.Console
         string IHealthCheckManager.LogHealthCheckResult()
         {
             StringBuilder apiStatusMessage = new(string.Empty);
+
             apiStatusMessage.Append(GetProductApiStatusMessage());
+            apiStatusMessage.Append('\n');
             _logger.ApiStatusMessage(apiStatusMessage.ToString());
+
+            try
+            {
+                _sendMail.SendMailToCustomer(apiStatusMessage.ToString());
+            }
+            catch (Exception ex)
+            {
+                _logger.MailSendingError(ex);
+            }
+
             return apiStatusMessage.ToString();
         }
 
