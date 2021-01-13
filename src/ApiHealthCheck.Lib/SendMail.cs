@@ -17,6 +17,10 @@ namespace ApiHealthCheck.Lib
 
         void ISendMail.SendMailToCustomer(string message)
         {
+            if (!_mailSettings.IsEnable)
+            {
+                return;
+            }
             SmtpClient smtpClient = new(_mailSettings.Host, _mailSettings.Port)
             {
                 EnableSsl = _mailSettings.EnableSsl == "1",

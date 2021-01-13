@@ -8,7 +8,7 @@ namespace ApiHealthCheck.Lib
 {
     public class HealthCheck : IHealthCheck
     {
-        bool IHealthCheck.IsApiHealthy(string url, ProductApiCredential? credential)
+        bool IHealthCheck.IsApiHealthy(string url, IApiCredential? credential)
         {
             HttpClient httpClient = new();
             if (credential != null)

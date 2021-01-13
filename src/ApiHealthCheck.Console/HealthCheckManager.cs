@@ -15,25 +15,28 @@ namespace ApiHealthCheck.Console
         private readonly ISendMail _sendMail;
         private readonly ILogger<HealthCheckManager> _logger;
         private readonly Urls _urls;
-        private readonly ProductApiCredential _credential;
+        private readonly ProductApiCredential _productApiCredential;
+        private readonly ResultApiCredential _resultApiCredential;
 
         public HealthCheckManager(
             IHealthCheck healthCheck,
             ISendMail sendMail,
             IOptionsMonitor<Urls> urlsOptionsMonitor,
-            IOptionsMonitor<ProductApiCredential> credentialOptionsMonitor,
+            IOptionsMonitor<ProductApiCredential> productApiCredentialOptionsMonitor,
+            IOptionsMonitor<ResultApiCredential> resultApiCredentialOptionsMonitor,
             ILogger<HealthCheckManager> logger)
         {
             _healthCheck = healthCheck;
             _sendMail = sendMail;
             _logger = logger;
             _urls = urlsOptionsMonitor.CurrentValue;
-            _credential = credentialOptionsMonitor.CurrentValue;
+            _productApiCredential = productApiCredentialOptionsMonitor.CurrentValue;
+            _resultApiCredential = resultApiCredentialOptionsMonitor.CurrentValue;
         }
 
         Urls IHealthCheckManager.Urls => _urls;
 
-        ProductApiCredential IHealthCheckManager.Credential => _credential;
+        ProductApiCredential IHealthCheckManager.Credential => _productApiCredential;
 
         string IHealthCheckManager.LogHealthCheckResult()
         {
@@ -41,8 +44,11 @@ namespace ApiHealthCheck.Console
 
             apiStatusMessage.Append(GetProductApiStatusMessage());
             apiStatusMessage.Append('\n');
-            _logger.ApiStatusMessage(apiStatusMessage.ToString());
 
+            apiStatusMessage.Append(GetResultApiStatusMessage());
+            apiStatusMessage.Append('\n');
+
+            _logger.ApiStatusMessage(apiStatusMessage.ToString());
             try
             {
                 _sendMail.SendMailToCustomer(apiStatusMessage.ToString());
@@ -57,18 +63,35 @@ namespace ApiHealthCheck.Console
 
         private string GetProductApiStatusMessage()
         {
-            _logger.ProductHealthCheckResultStart();
+            _logger.HealthCheckResultStart("Product api", "start");
             try
             {
-                bool isProductApiHealthy = _healthCheck.IsApiHealthy(_urls.ProductApiUrl, _credential);
+                bool isProductApiHealthy = _healthCheck.IsApiHealthy(_urls.ProductApiUrl, _productApiCredential);
                 string productApiStatusMessage = isProductApiHealthy ? "OK" : "Error";
-                _logger.ProductHealthCheckResultEnd();
+                _logger.HealthCheckResultStart("Product api", "end");
                 return $"Product api status is: {productApiStatusMessage}";
             }
             catch (Exception ex)
             {
                 _logger.HealthCheckError("product api", ex);
                 return $"Product api status is: Error";
+            }
+        }
+
+        private string GetResultApiStatusMessage()
+        {
+            _logger.HealthCheckResultStart("Result api", "start");
+            try
+            {
+                bool isProductApiHealthy = _healthCheck.IsApiHealthy(_urls.ResultApiUrl, _resultApiCredential);
+                string productApiStatusMessage = isProductApiHealthy ? "OK" : "Error";
+                _logger.HealthCheckResultStart("Result api", "end");
+                return $"Result api status is: {productApiStatusMessage}";
+            }
+            catch (Exception ex)
+            {
+                _logger.HealthCheckError("result api", ex);
+                return $"Result api status is: Error";
             }
         }
     }

@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.ApplicationInsights;
+using System;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("ApiHealthCheck.Test")]
@@ -27,6 +29,7 @@ static IHostBuilder CreateHostBuilder() =>
                 {
                     MailSettings mailSettings = new()
                     {
+                        IsEnable = context.Configuration.GetValue<bool>("MailSettings:IsEnable"),
                         From = context.Configuration.GetValue<string>("MailSettings:From"),
                         To = context.Configuration.GetValue<string>("MailSettings:To"),
                         Subject = context.Configuration.GetValue<string>("MailSettings:Subject"),
@@ -42,11 +45,16 @@ static IHostBuilder CreateHostBuilder() =>
                 .Configure<ExecutionSettings>(context.Configuration)
                 .Configure<Urls>(context.Configuration.GetSection("Urls"))
                 .Configure<ProductApiCredential>(context.Configuration.GetSection("Credential:ProductApi"))
+                .Configure<ResultApiCredential>(context.Configuration.GetSection("Credential:ResultApi"))
                 .Configure<ExecutionSettings>(context.Configuration)
                 .AddHostedService<HealthCheckService>();
         })
-        .ConfigureLogging(logging =>
+        .ConfigureLogging((context, builder) =>
         {
-            logging.ClearProviders();
-            logging.AddEventLog(configuration => configuration.SourceName = "Api health check");
+            builder.ClearProviders();
+            builder.AddEventLog(configuration => configuration.SourceName = "Api health check");
+            builder.AddApplicationInsights(context.Configuration.GetValue<string>("ApplicationInsights:Key"));
+            builder.AddFilter<ApplicationInsightsLoggerProvider>(
+                typeof(HealthCheckManager).FullName,
+                (LogLevel)Enum.Parse(typeof(LogLevel), context.Configuration.GetValue<string>("ApplicationInsights:LogLevel:Default")));
         });

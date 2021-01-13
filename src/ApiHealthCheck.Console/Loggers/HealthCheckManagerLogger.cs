@@ -5,15 +5,10 @@ namespace ApiHealthCheck.Console.Loggers
 {
     internal static class HealthCheckManagerLogger
     {
-        private static readonly Action<ILogger, Exception> _productHealthCheckResultStart = LoggerMessage.Define(
+        private static readonly Action<ILogger, string, string, Exception> _healthCheckResultAction = LoggerMessage.Define<string, string>(
             LogLevel.Debug,
-            new EventId(1, nameof(ProductHealthCheckResultStart)),
-            "Product health check result start.");
-
-        private static readonly Action<ILogger, Exception> _productHealthCheckResultEnd = LoggerMessage.Define(
-            LogLevel.Debug,
-            new EventId(1, nameof(ProductHealthCheckResultEnd)),
-            "Product health check result end.");
+            new EventId(1, nameof(HealthCheckResultStart)),
+            "{apiName} health check result {action}");
 
         private static readonly Action<ILogger, string, Exception> _healthCheckError = LoggerMessage.Define<string>(
             LogLevel.Error,
@@ -30,14 +25,9 @@ namespace ApiHealthCheck.Console.Loggers
             new EventId(1, nameof(MailSendingError)),
             "Mail sending error.");
 
-        public static void ProductHealthCheckResultStart(this ILogger<HealthCheckManager> logger)
+        public static void HealthCheckResultStart(this ILogger<HealthCheckManager> logger, string apiName, string action)
         {
-            _productHealthCheckResultStart(logger, null);
-        }
-
-        public static void ProductHealthCheckResultEnd(this ILogger<HealthCheckManager> logger)
-        {
-            _productHealthCheckResultEnd(logger, null);
+            _healthCheckResultAction(logger, apiName, action, null);
         }
 
         public static void HealthCheckError(this ILogger<HealthCheckManager> logger, string apiName, Exception ex)
