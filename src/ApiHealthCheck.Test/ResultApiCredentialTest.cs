@@ -8,14 +8,14 @@ namespace ApiHealthCheck.Test
         [Fact]
         public void ResultApiCredentialSuccessTest()
         {
-            ProductApiCredential productApiCredential = new()
+            ResultApiCredential resultApiCredential = new()
             {
                 UserName = "u1",
                 Password = "p1"
             };
 
-            Assert.Equal("u1", productApiCredential.UserName);
-            Assert.Equal("p1", productApiCredential.Password);
+            Assert.Equal("u1", resultApiCredential.UserName);
+            Assert.Equal("p1", resultApiCredential.Password);
         }
     }
 }

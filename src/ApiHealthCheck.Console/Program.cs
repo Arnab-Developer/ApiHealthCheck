@@ -46,6 +46,9 @@ static IHostBuilder CreateHostBuilder() =>
                 .Configure<Urls>(context.Configuration.GetSection("Urls"))
                 .Configure<ProductApiCredential>(context.Configuration.GetSection("Credential:ProductApi"))
                 .Configure<ResultApiCredential>(context.Configuration.GetSection("Credential:ResultApi"))
+                .Configure<ContentApiCredential>(context.Configuration.GetSection("Credential:ContentApi"))
+                .Configure<TestApiCredential>(context.Configuration.GetSection("Credential:TestApi"))
+                .Configure<TestPlayerApiCredential>(context.Configuration.GetSection("Credential:TestPlayerApi"))
                 .Configure<ExecutionSettings>(context.Configuration)
                 .AddHostedService<HealthCheckService>();
         })
