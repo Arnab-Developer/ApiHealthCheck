@@ -1,5 +1,8 @@
 ﻿namespace ApiHealthCheck.Lib.Credentials
 {
+    /// <summary>
+    /// Credential to access result api.
+    /// </summary>
     public record ResultApiCredential : IApiCredential
     {
         public string UserName { get; init; }
