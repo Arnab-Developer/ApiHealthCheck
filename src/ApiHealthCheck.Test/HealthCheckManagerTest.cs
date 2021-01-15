@@ -22,12 +22,14 @@ namespace ApiHealthCheck.Test
         private readonly Mock<IOptionsMonitor<ContentApiCredential>> _contentApiCredentialOptionMonitorMock;
         private readonly Mock<IOptionsMonitor<TestApiCredential>> _testApiCredentialOptionMonitorMock;
         private readonly Mock<IOptionsMonitor<TestPlayerApiCredential>> _testPlayerApiCredentialOptionMonitorMock;
+        private readonly Mock<IOptionsMonitor<MailSendSettings>> _mailSendSettingsOptionsMonitor;
 
         private readonly ProductApiCredential _productApiCredential;
         private readonly ResultApiCredential _resultApiCredential;
         private readonly ContentApiCredential _contentApiCredential;
         private readonly TestApiCredential _testApiCredential;
         private readonly TestPlayerApiCredential _testPlayerApiCredential;
+        private readonly MailSendSettings _mailSendSettings;
 
         private IHealthCheckManager? _healthCheckManager;
 
@@ -43,12 +45,14 @@ namespace ApiHealthCheck.Test
             _contentApiCredentialOptionMonitorMock = new Mock<IOptionsMonitor<ContentApiCredential>>();
             _testApiCredentialOptionMonitorMock = new Mock<IOptionsMonitor<TestApiCredential>>();
             _testPlayerApiCredentialOptionMonitorMock = new Mock<IOptionsMonitor<TestPlayerApiCredential>>();
+            _mailSendSettingsOptionsMonitor = new Mock<IOptionsMonitor<MailSendSettings>>();
 
             _productApiCredential = new() { UserName = "jon", Password = "pass" };
             _resultApiCredential = new() { UserName = "jon", Password = "pass" };
             _contentApiCredential = new() { UserName = "jon", Password = "pass" };
             _testApiCredential = new() { UserName = "jon", Password = "pass" };
             _testPlayerApiCredential = new() { UserName = "jon", Password = "pass" };
+            _mailSendSettings = new MailSendSettings() { IsMailSendEnable = true };
         }
 
         [Fact]
@@ -174,6 +178,49 @@ namespace ApiHealthCheck.Test
                 apiStatusMessage);
         }
 
+        [Fact]
+        public void LogHealthCheckResultEmailFailedTest()
+        {
+            Setup();
+
+            _healthCheckMock
+                .Setup(s => s.IsApiHealthy(It.IsAny<string>(), _productApiCredential))
+                .Returns(true)
+                .Verifiable();
+
+            _healthCheckMock
+                .Setup(s => s.IsApiHealthy(It.IsAny<string>(), _resultApiCredential))
+                .Returns(false)
+                .Verifiable();
+
+            _healthCheckMock
+                .Setup(s => s.IsApiHealthy(It.IsAny<string>(), _contentApiCredential))
+                .Returns(true)
+                .Verifiable();
+
+            _healthCheckMock
+                .Setup(s => s.IsApiHealthy(It.IsAny<string>(), _testApiCredential))
+                .Returns(false)
+                .Verifiable();
+
+            _healthCheckMock
+                .Setup(s => s.IsApiHealthy(It.IsAny<string>(), _testPlayerApiCredential))
+                .Returns(true)
+                .Verifiable();
+
+            _mailSendSettings.IsMailSendEnable = false;
+
+            CreateHealthCheckManager();
+
+            string apiStatusMessage = _healthCheckManager!.LogHealthCheckResult();
+
+            _healthCheckMock.Verify();
+            _sendMailMock.VerifyNoOtherCalls();
+            Assert.Equal(
+                "Product api status is: OK\nResult api status is: Error\nContent api status is: OK\nTest api status is: Error\nTest player api status is: OK\n",
+                apiStatusMessage);
+        }
+
         private void Setup()
         {
             _urlsOptionMonitorMock
@@ -206,6 +253,10 @@ namespace ApiHealthCheck.Test
                 .Setup(s => s.CurrentValue)
                 .Returns(_testPlayerApiCredential);
 
+            _mailSendSettingsOptionsMonitor
+                .Setup(s => s.CurrentValue)
+                .Returns(_mailSendSettings);
+
             _sendMailMock
                 .Setup(s => s.SendMailToCustomer(It.IsAny<string>()))
                 .Verifiable();
@@ -222,6 +273,7 @@ namespace ApiHealthCheck.Test
                 _contentApiCredentialOptionMonitorMock.Object,
                 _testApiCredentialOptionMonitorMock.Object,
                 _testPlayerApiCredentialOptionMonitorMock.Object,
+                _mailSendSettingsOptionsMonitor.Object,
                 _healthCheckManagerLoggerMock.Object);
         }
     }

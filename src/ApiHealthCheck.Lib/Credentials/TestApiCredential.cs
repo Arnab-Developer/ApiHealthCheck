@@ -2,8 +2,8 @@
 {
     public record TestApiCredential : IApiCredential
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        public string UserName { get; init; }
+        public string Password { get; init; }
 
         public TestApiCredential()
         {

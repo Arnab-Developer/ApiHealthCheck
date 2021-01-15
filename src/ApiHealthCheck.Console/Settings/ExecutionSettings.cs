@@ -2,6 +2,6 @@
 {
     internal record ExecutionSettings
     {
-        public int ExecutionFrequency { get; set; }
+        public int ExecutionFrequency { get; init; }
     }
 }

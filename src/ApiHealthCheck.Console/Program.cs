@@ -29,7 +29,6 @@ static IHostBuilder CreateHostBuilder() =>
                 {
                     MailSettings mailSettings = new()
                     {
-                        IsEnable = context.Configuration.GetValue<bool>("MailSettings:IsEnable"),
                         From = context.Configuration.GetValue<string>("MailSettings:From"),
                         To = context.Configuration.GetValue<string>("MailSettings:To"),
                         Subject = context.Configuration.GetValue<string>("MailSettings:Subject"),
@@ -50,6 +49,7 @@ static IHostBuilder CreateHostBuilder() =>
                 .Configure<TestApiCredential>(context.Configuration.GetSection("Credential:TestApi"))
                 .Configure<TestPlayerApiCredential>(context.Configuration.GetSection("Credential:TestPlayerApi"))
                 .Configure<ExecutionSettings>(context.Configuration)
+                .Configure<MailSendSettings>(context.Configuration)
                 .AddHostedService<HealthCheckService>();
         })
         .ConfigureLogging((context, builder) =>

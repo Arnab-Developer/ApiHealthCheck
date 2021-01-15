@@ -2,11 +2,11 @@
 {
     internal record Urls
     {
-        public string ProductApiUrl { get; set; }
-        public string ResultApiUrl { get; set; }
-        public string ContentApiUrl { get; set; }
-        public string TestApiUrl { get; set; }
-        public string TestPlayerApiUrl { get; set; }
+        public string ProductApiUrl { get; init; }
+        public string ResultApiUrl { get; init; }
+        public string ContentApiUrl { get; init; }
+        public string TestApiUrl { get; init; }
+        public string TestPlayerApiUrl { get; init; }
 
         public Urls()
         {

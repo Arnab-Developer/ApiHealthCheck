@@ -10,7 +10,6 @@ namespace ApiHealthCheck.Test
         {
             MailSettings mailSettings = new()
             {
-                IsEnable = true,
                 From = "from email",
                 To = "to email",
                 Subject = "email sub",
@@ -21,7 +20,6 @@ namespace ApiHealthCheck.Test
                 EnableSsl = "true"
             };
 
-            Assert.True(mailSettings.IsEnable);
             Assert.Equal("from email", mailSettings.From);
             Assert.Equal("to email", mailSettings.To);
             Assert.Equal("email sub", mailSettings.Subject);
@@ -37,7 +35,6 @@ namespace ApiHealthCheck.Test
         {
             MailSettings mailSettings = new()
             {
-                IsEnable = false,
                 From = "from email",
                 To = "to email",
                 Subject = "email sub",
@@ -48,7 +45,6 @@ namespace ApiHealthCheck.Test
                 EnableSsl = "true"
             };
 
-            Assert.False(mailSettings.IsEnable);
             Assert.Equal("from email", mailSettings.From);
             Assert.Equal("to email", mailSettings.To);
             Assert.Equal("email sub", mailSettings.Subject);

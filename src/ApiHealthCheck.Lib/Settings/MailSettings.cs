@@ -2,15 +2,14 @@
 {
     public record MailSettings
     {
-        public bool IsEnable { get; set; }
-        public string From { get; set; }
-        public string To { get; set; }
-        public string Subject { get; set; }
-        public string Host { get; set; }
-        public int Port { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string EnableSsl { get; set; }
+        public string From { get; init; }
+        public string To { get; init; }
+        public string Subject { get; init; }
+        public string Host { get; init; }
+        public int Port { get; init; }
+        public string UserName { get; init; }
+        public string Password { get; init; }
+        public string EnableSsl { get; init; }
 
         public MailSettings()
         {

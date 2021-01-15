@@ -20,6 +20,7 @@ namespace ApiHealthCheck.Console
         private readonly ContentApiCredential _contentApiCredential;
         private readonly TestApiCredential _testApiCredential;
         private readonly TestPlayerApiCredential _testPlayerApiCredential;
+        private readonly MailSendSettings _mailSendSettings;
 
         public HealthCheckManager(
             IHealthCheck healthCheck,
@@ -30,6 +31,7 @@ namespace ApiHealthCheck.Console
             IOptionsMonitor<ContentApiCredential> contentApiCredentialOptionsMonitor,
             IOptionsMonitor<TestApiCredential> testApiCredentialOptionsMonitor,
             IOptionsMonitor<TestPlayerApiCredential> testPlayerApiCredentialOptionsMonitor,
+            IOptionsMonitor<MailSendSettings> mailSendSettingsOptionsMonitor,
             ILogger<HealthCheckManager> logger)
         {
             _healthCheck = healthCheck;
@@ -41,6 +43,7 @@ namespace ApiHealthCheck.Console
             _contentApiCredential = contentApiCredentialOptionsMonitor.CurrentValue;
             _testApiCredential = testApiCredentialOptionsMonitor.CurrentValue;
             _testPlayerApiCredential = testPlayerApiCredentialOptionsMonitor.CurrentValue;
+            _mailSendSettings = mailSendSettingsOptionsMonitor.CurrentValue;
         }
 
         Urls IHealthCheckManager.Urls => _urls;
@@ -67,13 +70,17 @@ namespace ApiHealthCheck.Console
             apiStatusMessage.Append('\n');
 
             _logger.ApiStatusMessage(apiStatusMessage.ToString());
-            try
+
+            if (_mailSendSettings.IsMailSendEnable)
             {
-                _sendMail.SendMailToCustomer(apiStatusMessage.ToString());
-            }
-            catch (Exception ex)
-            {
-                _logger.MailSendingError(ex);
+                try
+                {
+                    _sendMail.SendMailToCustomer(apiStatusMessage.ToString());
+                }
+                catch (Exception ex)
+                {
+                    _logger.MailSendingError(ex);
+                }
             }
 
             return apiStatusMessage.ToString();
