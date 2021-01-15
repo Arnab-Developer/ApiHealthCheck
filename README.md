@@ -6,9 +6,9 @@ Background task application with .NET (with DI, logging, configuration) to check
 
 ## Solution structure
 
-* Lib: core functionality to check api health.
-* Console app: check api health with the lib.
-* Test: unit test.
+* Core functionality to check api health in class lib.
+* Console app to check api health using the core functionality in the class lib.
+* Unit test.
 
 ## Tech stack
 
@@ -19,4 +19,4 @@ Background task application with .NET (with DI, logging, configuration) to check
 
 ## Contribution
 
-If you want to contribute in this repo then create an issue first and let me know how you want to contribute in this repo.
+If you want to contribute in this repo then create an issue and let me know how you want to contribute.
