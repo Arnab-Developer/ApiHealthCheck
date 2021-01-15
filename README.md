@@ -15,6 +15,7 @@ Background task application with .NET (with DI, logging, configuration) to check
 * .NET 5
 * C# 9
 * xunit for unit testing
+* IDE: Visual Studio 2019
 
 ## Contribution
 
