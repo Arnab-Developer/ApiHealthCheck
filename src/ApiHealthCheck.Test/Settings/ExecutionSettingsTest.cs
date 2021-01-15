@@ -1,7 +1,7 @@
 ﻿using ApiHealthCheck.Console.Settings;
 using Xunit;
 
-namespace ApiHealthCheck.Test
+namespace ApiHealthCheck.Test.Settings
 {
     public class ExecutionSettingsTest
     {
