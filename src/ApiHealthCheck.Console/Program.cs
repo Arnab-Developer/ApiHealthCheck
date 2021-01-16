@@ -50,6 +50,7 @@ static IHostBuilder CreateHostBuilder() =>
                 .Configure<TestPlayerApiCredential>(context.Configuration.GetSection("Credential:TestPlayerApi"))
                 .Configure<ExecutionSettings>(context.Configuration)
                 .Configure<MailSendSettings>(context.Configuration)
+                .Configure<UrlsIsEnable>(context.Configuration.GetSection("UrlsIsEnable"))
                 .AddHostedService<HealthCheckService>();
         })
         .ConfigureLogging((context, builder) =>

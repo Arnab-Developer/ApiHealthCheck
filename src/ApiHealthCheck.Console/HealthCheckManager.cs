@@ -21,6 +21,7 @@ namespace ApiHealthCheck.Console
         private readonly TestApiCredential _testApiCredential;
         private readonly TestPlayerApiCredential _testPlayerApiCredential;
         private readonly MailSendSettings _mailSendSettings;
+        private readonly UrlsIsEnable _urlsEnable;
 
         public HealthCheckManager(
             IHealthCheck healthCheck,
@@ -32,6 +33,7 @@ namespace ApiHealthCheck.Console
             IOptionsMonitor<TestApiCredential> testApiCredentialOptionsMonitor,
             IOptionsMonitor<TestPlayerApiCredential> testPlayerApiCredentialOptionsMonitor,
             IOptionsMonitor<MailSendSettings> mailSendSettingsOptionsMonitor,
+            IOptionsMonitor<UrlsIsEnable> urlsEnableOptionsMonitor,
             ILogger<HealthCheckManager> logger)
         {
             _healthCheck = healthCheck;
@@ -44,42 +46,69 @@ namespace ApiHealthCheck.Console
             _testApiCredential = testApiCredentialOptionsMonitor.CurrentValue;
             _testPlayerApiCredential = testPlayerApiCredentialOptionsMonitor.CurrentValue;
             _mailSendSettings = mailSendSettingsOptionsMonitor.CurrentValue;
+            _urlsEnable = urlsEnableOptionsMonitor.CurrentValue;
         }
 
         Urls IHealthCheckManager.Urls => _urls;
 
-        ProductApiCredential IHealthCheckManager.Credential => _productApiCredential;
+        ProductApiCredential IHealthCheckManager.ProductApiCredential => _productApiCredential;
+
+        ResultApiCredential IHealthCheckManager.ResultApiCredential => _resultApiCredential;
+
+        ContentApiCredential IHealthCheckManager.ContentApiCredential => _contentApiCredential;
+
+        TestApiCredential IHealthCheckManager.TestApiCredential => _testApiCredential;
+
+        TestPlayerApiCredential IHealthCheckManager.TestPlayerApiCredential => _testPlayerApiCredential;
 
         string IHealthCheckManager.LogHealthCheckResult()
         {
             StringBuilder apiStatusMessage = new(string.Empty);
 
-            apiStatusMessage.Append(GetProductApiStatusMessage());
-            apiStatusMessage.Append('\n');
-
-            apiStatusMessage.Append(GetResultApiStatusMessage());
-            apiStatusMessage.Append('\n');
-
-            apiStatusMessage.Append(GetContentApiStatusMessage());
-            apiStatusMessage.Append('\n');
-
-            apiStatusMessage.Append(GetTestApiStatusMessage());
-            apiStatusMessage.Append('\n');
-
-            apiStatusMessage.Append(GetTestPlayerApiStatusMessage());
-            apiStatusMessage.Append('\n');
-
-            _logger.ApiStatusMessage(apiStatusMessage.ToString());
-
-            if (_mailSendSettings.IsMailSendEnable)
+            if (_urlsEnable.IsCheckProductApi)
             {
-                try
+                apiStatusMessage.Append(GetProductApiStatusMessage());
+                apiStatusMessage.Append('\n');
+            }
+
+            if (_urlsEnable.IsCheckResultApi)
+            {
+                apiStatusMessage.Append(GetResultApiStatusMessage());
+                apiStatusMessage.Append('\n');
+            }
+
+            if (_urlsEnable.IsCheckContentApi)
+            {
+                apiStatusMessage.Append(GetContentApiStatusMessage());
+                apiStatusMessage.Append('\n');
+            }
+
+            if (_urlsEnable.IsCheckTestApi)
+            {
+                apiStatusMessage.Append(GetTestApiStatusMessage());
+                apiStatusMessage.Append('\n');
+            }
+
+            if (_urlsEnable.IsCheckTestPlayerApi)
+            {
+                apiStatusMessage.Append(GetTestPlayerApiStatusMessage());
+                apiStatusMessage.Append('\n');
+            }
+
+            if (apiStatusMessage.ToString() != string.Empty)
+            {
+                _logger.ApiStatusMessage(apiStatusMessage.ToString());
+
+                if (_mailSendSettings.IsMailSendEnable)
                 {
-                    _sendMail.SendMailToCustomer(apiStatusMessage.ToString());
-                }
-                catch (Exception ex)
-                {
-                    _logger.MailSendingError(ex);
+                    try
+                    {
+                        _sendMail.SendMailToCustomer(apiStatusMessage.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.MailSendingError(ex);
+                    }
                 }
             }
 

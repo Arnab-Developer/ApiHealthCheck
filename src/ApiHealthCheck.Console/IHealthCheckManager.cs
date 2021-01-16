@@ -14,9 +14,29 @@ namespace ApiHealthCheck.Console
         Urls Urls { get; }
 
         /// <summary>
-        /// Get api credential to access api.
+        /// Get api credential to access product api.
         /// </summary>
-        ProductApiCredential Credential { get; }
+        ProductApiCredential ProductApiCredential { get; }
+
+        /// <summary>
+        /// Get api credential to access result api.
+        /// </summary>
+        ResultApiCredential ResultApiCredential { get; }
+
+        /// <summary>
+        /// Get api credential to access content api.
+        /// </summary>
+        ContentApiCredential ContentApiCredential { get; }
+
+        /// <summary>
+        /// Get api credential to access test api.
+        /// </summary>
+        TestApiCredential TestApiCredential { get; }
+
+        /// <summary>
+        /// Get api credential to access test player api.
+        /// </summary>
+        TestPlayerApiCredential TestPlayerApiCredential { get; }
 
         /// <summary>
         /// Log api health check result.
