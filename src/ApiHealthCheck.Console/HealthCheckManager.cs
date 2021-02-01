@@ -1,10 +1,10 @@
 ﻿using ApiHealthCheck.Console.Loggers;
 using ApiHealthCheck.Console.Settings;
 using ApiHealthCheck.Lib;
-using ApiHealthCheck.Lib.Credentials;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace ApiHealthCheck.Console
@@ -13,97 +13,46 @@ namespace ApiHealthCheck.Console
     {
         private readonly IHealthCheck _healthCheck;
         private readonly ISendMail _sendMail;
+        private readonly IEnumerable<ApiDetail> _urlDetails;
         private readonly ILogger<HealthCheckManager> _logger;
-        private readonly Urls _urls;
-        private readonly ProductApiCredential _productApiCredential;
-        private readonly ResultApiCredential _resultApiCredential;
-        private readonly ContentApiCredential _contentApiCredential;
-        private readonly TestApiCredential _testApiCredential;
-        private readonly TestPlayerApiCredential _testPlayerApiCredential;
         private readonly MailSendSettings _mailSendSettings;
-        private readonly UrlsIsEnable _urlsEnable;
 
         public HealthCheckManager(
             IHealthCheck healthCheck,
             ISendMail sendMail,
-            IOptionsMonitor<Urls> urlsOptionsMonitor,
-            IOptionsMonitor<ProductApiCredential> productApiCredentialOptionsMonitor,
-            IOptionsMonitor<ResultApiCredential> resultApiCredentialOptionsMonitor,
-            IOptionsMonitor<ContentApiCredential> contentApiCredentialOptionsMonitor,
-            IOptionsMonitor<TestApiCredential> testApiCredentialOptionsMonitor,
-            IOptionsMonitor<TestPlayerApiCredential> testPlayerApiCredentialOptionsMonitor,
             IOptionsMonitor<MailSendSettings> mailSendSettingsOptionsMonitor,
-            IOptionsMonitor<UrlsIsEnable> urlsEnableOptionsMonitor,
+            IEnumerable<ApiDetail> urlDetails,
             ILogger<HealthCheckManager> logger)
         {
             _healthCheck = healthCheck;
             _sendMail = sendMail;
-            _logger = logger;
-            _urls = urlsOptionsMonitor.CurrentValue;
-            _productApiCredential = productApiCredentialOptionsMonitor.CurrentValue;
-            _resultApiCredential = resultApiCredentialOptionsMonitor.CurrentValue;
-            _contentApiCredential = contentApiCredentialOptionsMonitor.CurrentValue;
-            _testApiCredential = testApiCredentialOptionsMonitor.CurrentValue;
-            _testPlayerApiCredential = testPlayerApiCredentialOptionsMonitor.CurrentValue;
+            _urlDetails = urlDetails;
             _mailSendSettings = mailSendSettingsOptionsMonitor.CurrentValue;
-            _urlsEnable = urlsEnableOptionsMonitor.CurrentValue;
+            _logger = logger;
         }
 
-        Urls IHealthCheckManager.Urls => _urls;
-
-        ProductApiCredential IHealthCheckManager.ProductApiCredential => _productApiCredential;
-
-        ResultApiCredential IHealthCheckManager.ResultApiCredential => _resultApiCredential;
-
-        ContentApiCredential IHealthCheckManager.ContentApiCredential => _contentApiCredential;
-
-        TestApiCredential IHealthCheckManager.TestApiCredential => _testApiCredential;
-
-        TestPlayerApiCredential IHealthCheckManager.TestPlayerApiCredential => _testPlayerApiCredential;
+        IEnumerable<ApiDetail> IHealthCheckManager.ApiDetails => _urlDetails;
 
         string IHealthCheckManager.LogHealthCheckResult()
         {
-            StringBuilder apiStatusMessage = new(string.Empty);
-
-            if (_urlsEnable.IsCheckProductApi)
+            StringBuilder apiStatusMessages = new(string.Empty);
+            foreach (ApiDetail urlDetail in _urlDetails)
             {
-                apiStatusMessage.Append(GetProductApiStatusMessage());
-                apiStatusMessage.Append('\n');
+                if (urlDetail.IsEnable)
+                {
+                    apiStatusMessages.Append(GetApiStatusMessage(urlDetail));
+                    apiStatusMessages.Append('\n');
+                }
             }
-
-            if (_urlsEnable.IsCheckResultApi)
+            if (apiStatusMessages.ToString() != string.Empty)
             {
-                apiStatusMessage.Append(GetResultApiStatusMessage());
-                apiStatusMessage.Append('\n');
-            }
-
-            if (_urlsEnable.IsCheckContentApi)
-            {
-                apiStatusMessage.Append(GetContentApiStatusMessage());
-                apiStatusMessage.Append('\n');
-            }
-
-            if (_urlsEnable.IsCheckTestApi)
-            {
-                apiStatusMessage.Append(GetTestApiStatusMessage());
-                apiStatusMessage.Append('\n');
-            }
-
-            if (_urlsEnable.IsCheckTestPlayerApi)
-            {
-                apiStatusMessage.Append(GetTestPlayerApiStatusMessage());
-                apiStatusMessage.Append('\n');
-            }
-
-            if (apiStatusMessage.ToString() != string.Empty)
-            {
-                _logger.ApiStatusMessage(apiStatusMessage.ToString());
+                _logger.ApiStatusMessage(apiStatusMessages.ToString());
 
                 if (_mailSendSettings.IsMailSendEnable)
                 {
                     try
                     {
-                        _sendMail.SendMailToCustomer(apiStatusMessage.ToString());
+                        _sendMail.SendMailToCustomer(apiStatusMessages.ToString());
                     }
                     catch (Exception ex)
                     {
@@ -111,92 +60,23 @@ namespace ApiHealthCheck.Console
                     }
                 }
             }
-
-            return apiStatusMessage.ToString();
+            return apiStatusMessages.ToString();
         }
 
-        private string GetProductApiStatusMessage()
+        private string GetApiStatusMessage(ApiDetail apiDetail)
         {
-            _logger.HealthCheckResultAction("Product api", "start");
+            _logger.HealthCheckResultAction(apiDetail.Name, "start");
             try
             {
-                bool isProductApiHealthy = _healthCheck.IsApiHealthy(_urls.ProductApiUrl, _productApiCredential);
-                string productApiStatusMessage = isProductApiHealthy ? "OK" : "Error";
-                _logger.HealthCheckResultAction("Product api", "end");
-                return $"Product api status is: {productApiStatusMessage}";
+                bool isApiHealthy = _healthCheck.IsApiHealthy(apiDetail.Url, apiDetail.ApiCredential);
+                string apiStatusMessage = isApiHealthy ? "OK" : "Error";
+                _logger.HealthCheckResultAction(apiDetail.Name, "end");
+                return $"{apiDetail.Name} status is: {apiStatusMessage}";
             }
             catch (Exception ex)
             {
-                _logger.HealthCheckError("product api", ex);
-                return $"Product api status is: Error";
-            }
-        }
-
-        private string GetResultApiStatusMessage()
-        {
-            _logger.HealthCheckResultAction("Result api", "start");
-            try
-            {
-                bool isProductApiHealthy = _healthCheck.IsApiHealthy(_urls.ResultApiUrl, _resultApiCredential);
-                string resultApiStatusMessage = isProductApiHealthy ? "OK" : "Error";
-                _logger.HealthCheckResultAction("Result api", "end");
-                return $"Result api status is: {resultApiStatusMessage}";
-            }
-            catch (Exception ex)
-            {
-                _logger.HealthCheckError("result api", ex);
-                return $"Result api status is: Error";
-            }
-        }
-
-        private string GetContentApiStatusMessage()
-        {
-            _logger.HealthCheckResultAction("Content api", "start");
-            try
-            {
-                bool isContentApiHealthy = _healthCheck.IsApiHealthy(_urls.ContentApiUrl, _contentApiCredential);
-                string contentApiStatusMessage = isContentApiHealthy ? "OK" : "Error";
-                _logger.HealthCheckResultAction("Content api", "end");
-                return $"Content api status is: {contentApiStatusMessage}";
-            }
-            catch (Exception ex)
-            {
-                _logger.HealthCheckError("content api", ex);
-                return $"Content api status is: Error";
-            }
-        }
-
-        private string GetTestApiStatusMessage()
-        {
-            _logger.HealthCheckResultAction("Test api", "start");
-            try
-            {
-                bool isTestApiHealthy = _healthCheck.IsApiHealthy(_urls.TestApiUrl, _testApiCredential);
-                string testApiStatusMessage = isTestApiHealthy ? "OK" : "Error";
-                _logger.HealthCheckResultAction("test api", "end");
-                return $"Test api status is: {testApiStatusMessage}";
-            }
-            catch (Exception ex)
-            {
-                _logger.HealthCheckError("test api", ex);
-                return $"Test api status is: Error";
-            }
-        }
-
-        private string GetTestPlayerApiStatusMessage()
-        {
-            _logger.HealthCheckResultAction("Test player api", "start");
-            try
-            {
-                bool isTestPlayerApiHealthy = _healthCheck.IsApiHealthy(_urls.TestPlayerApiUrl, _testPlayerApiCredential);
-                string testPlayerApiStatusMessage = isTestPlayerApiHealthy ? "OK" : "Error";
-                _logger.HealthCheckResultAction("test player api", "end");
-                return $"Test player api status is: {testPlayerApiStatusMessage}";
-            }
-            catch (Exception ex)
-            {
-                _logger.HealthCheckError("test player api", ex);
-                return $"Test player api status is: Error";
+                _logger.HealthCheckError(apiDetail.Name, ex);
+                return $"{apiDetail.Name} status is: Error";
             }
         }
     }

@@ -1,5 +1,4 @@
 using ApiHealthCheck.Lib;
-using ApiHealthCheck.Lib.Credentials;
 using System;
 using Xunit;
 
@@ -11,7 +10,7 @@ namespace ApiHealthCheck.Test
         public void IsApiHealthySuccessTest()
         {
             IHealthCheck healthCheck = new HealthCheck();
-            bool isHealthy = healthCheck.IsApiHealthy("https://google.com", new ProductApiCredential() { UserName = "jon", Password = "pwd1" });
+            bool isHealthy = healthCheck.IsApiHealthy("https://google.com", new ApiCredential("jon", "pwd1"));
             Assert.True(isHealthy);
         }
 
@@ -21,7 +20,7 @@ namespace ApiHealthCheck.Test
             IHealthCheck healthCheck = new HealthCheck();
             Assert.Throws<AggregateException>(() =>
             {
-                healthCheck.IsApiHealthy("http://google.com1", new ProductApiCredential() { UserName = "jon", Password = "pwd1" });
+                healthCheck.IsApiHealthy("http://google.com1", new ApiCredential("jon", "pwd1"));
             });
         }
 

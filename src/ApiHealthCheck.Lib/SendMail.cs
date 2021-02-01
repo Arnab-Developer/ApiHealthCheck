@@ -4,17 +4,10 @@ using System.Net.Mail;
 
 namespace ApiHealthCheck.Lib
 {
-    /// <summary>
-    /// Class to send mail.
-    /// </summary>
     public class SendMail : ISendMail
     {
         private readonly MailSettings _mailSettings;
 
-        /// <summary>
-        /// Creates a new object of SendMail class.
-        /// </summary>
-        /// <param name="mailSettings">Mail settings.</param>
         public SendMail(MailSettings mailSettings)
         {
             _mailSettings = mailSettings;

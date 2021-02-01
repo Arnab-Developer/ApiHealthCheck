@@ -27,7 +27,7 @@ namespace ApiHealthCheck.Console.Loggers
 
         public static void HealthCheckResultAction(this ILogger<HealthCheckManager> logger, string apiName, string action)
         {
-            _healthCheckResultAction(logger, apiName, action, null);
+            _healthCheckResultAction(logger, apiName, action, default);
         }
 
         public static void HealthCheckError(this ILogger<HealthCheckManager> logger, string apiName, Exception ex)
@@ -37,7 +37,7 @@ namespace ApiHealthCheck.Console.Loggers
 
         public static void ApiStatusMessage(this ILogger<HealthCheckManager> logger, string apiStatusMessage)
         {
-            _apiStatusMessage(logger, apiStatusMessage, null);
+            _apiStatusMessage(logger, apiStatusMessage, default);
         }
 
         public static void MailSendingError(this ILogger<HealthCheckManager> logger, Exception ex)
