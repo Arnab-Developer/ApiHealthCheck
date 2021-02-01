@@ -1,5 +1,4 @@
-﻿using ApiHealthCheck.Lib.Credentials;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -11,7 +10,7 @@ namespace ApiHealthCheck.Lib
     /// </summary>
     public class HealthCheck : IHealthCheck
     {
-        bool IHealthCheck.IsApiHealthy(string url, IApiCredential? credential)
+        bool IHealthCheck.IsApiHealthy(string url, ApiCredential? credential)
         {
             HttpClient httpClient = new();
             if (credential != null)

@@ -1,5 +1,4 @@
-﻿using ApiHealthCheck.Console.Settings;
-using Xunit;
+﻿using Xunit;
 
 namespace ApiHealthCheck.Test.Settings
 {

@@ -1,5 +1,4 @@
-﻿using ApiHealthCheck.Lib.Credentials;
-using Xunit;
+﻿using Xunit;
 
 namespace ApiHealthCheck.Test.Credentials
 {

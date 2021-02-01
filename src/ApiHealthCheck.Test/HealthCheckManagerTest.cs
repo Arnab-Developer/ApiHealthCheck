@@ -1,7 +1,6 @@
 ﻿using ApiHealthCheck.Console;
 using ApiHealthCheck.Console.Settings;
 using ApiHealthCheck.Lib;
-using ApiHealthCheck.Lib.Credentials;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;

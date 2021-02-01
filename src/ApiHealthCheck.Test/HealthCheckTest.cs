@@ -1,5 +1,4 @@
 using ApiHealthCheck.Lib;
-using ApiHealthCheck.Lib.Credentials;
 using System;
 using Xunit;
 
