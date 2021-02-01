@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ApiHealthCheck.Lib
 {
-    /// <summary>
-    /// Class to check api health.
-    /// </summary>
     public class HealthCheck : IHealthCheck
     {
         bool IHealthCheck.IsApiHealthy(string url, ApiCredential? credential)

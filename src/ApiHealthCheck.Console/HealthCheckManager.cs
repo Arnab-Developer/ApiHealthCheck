@@ -31,7 +31,7 @@ namespace ApiHealthCheck.Console
             _logger = logger;
         }
 
-        IEnumerable<ApiDetail> IHealthCheckManager.UrlDetails => _urlDetails;
+        IEnumerable<ApiDetail> IHealthCheckManager.ApiDetails => _urlDetails;
 
         string IHealthCheckManager.LogHealthCheckResult()
         {

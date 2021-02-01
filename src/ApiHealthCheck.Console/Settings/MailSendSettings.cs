@@ -1,7 +1,4 @@
 ﻿namespace ApiHealthCheck.Console.Settings
 {
-    internal record MailSendSettings
-    {
-        public bool IsMailSendEnable { get; set; }
-    }
+    internal record MailSendSettings(bool IsMailSendEnable);
 }

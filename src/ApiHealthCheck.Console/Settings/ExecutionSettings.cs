@@ -1,7 +1,4 @@
 ﻿namespace ApiHealthCheck.Console.Settings
 {
-    internal record ExecutionSettings
-    {
-        public int ExecutionFrequency { get; init; }
-    }
+    internal record ExecutionSettings(int ExecutionFrequency);
 }

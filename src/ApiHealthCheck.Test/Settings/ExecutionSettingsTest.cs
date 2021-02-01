@@ -8,10 +8,7 @@ namespace ApiHealthCheck.Test.Settings
         [Fact]
         public void ExecutionSettingsSuccessTest()
         {
-            ExecutionSettings executionSettings = new()
-            {
-                ExecutionFrequency = int.Parse("122")
-            };
+            ExecutionSettings executionSettings = new(int.Parse("122"));
             Assert.Equal(122, executionSettings.ExecutionFrequency);
         }
     }

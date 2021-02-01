@@ -8,42 +8,17 @@ namespace ApiHealthCheck.Test.Settings
         [Fact]
         public void MailSettingsSuccessTest()
         {
-            MailSettings mailSettings = new()
-            {
-                From = "from email",
-                To = "to email",
-                Subject = "email sub",
-                Host = "email host",
-                Port = 105,
-                UserName = "smtp user",
-                Password = "smtp pwd",
-                EnableSsl = "true"
-            };
-
-            Assert.Equal("from email", mailSettings.From);
-            Assert.Equal("to email", mailSettings.To);
-            Assert.Equal("email sub", mailSettings.Subject);
-            Assert.Equal("email host", mailSettings.Host);
-            Assert.Equal(105, mailSettings.Port);
-            Assert.Equal("smtp user", mailSettings.UserName);
-            Assert.Equal("smtp pwd", mailSettings.Password);
-            Assert.Equal("true", mailSettings.EnableSsl);
-        }
-
-        [Fact]
-        public void MailSettingsFalseTest()
-        {
-            MailSettings mailSettings = new()
-            {
-                From = "from email",
-                To = "to email",
-                Subject = "email sub",
-                Host = "email host",
-                Port = 105,
-                UserName = "smtp user",
-                Password = "smtp pwd",
-                EnableSsl = "true"
-            };
+            MailSettings mailSettings = new
+            (
+                "from email",
+                "to email",
+                "email sub",
+                "email host",
+                105,
+                "smtp user",
+                "smtp pwd",
+                "true"
+            );
 
             Assert.Equal("from email", mailSettings.From);
             Assert.Equal("to email", mailSettings.To);

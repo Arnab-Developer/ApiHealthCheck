@@ -5,7 +5,7 @@ namespace ApiHealthCheck.Console
 {
     internal interface IHealthCheckManager
     {
-        IEnumerable<ApiDetail> UrlDetails { get; }
+        IEnumerable<ApiDetail> ApiDetails { get; }
 
         string LogHealthCheckResult();
     }
