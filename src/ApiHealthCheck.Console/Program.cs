@@ -40,17 +40,6 @@ static IHostBuilder CreateHostBuilder() =>
                         ),
                         new ApiDetail
                         (
-                            "Product api",
-                            context.Configuration.GetValue<string>("Urls:ProductApiUrl"),
-                            new ApiCredential
-                            (
-                                context.Configuration.GetValue<string>("Credential:ProductApi:UserName"),
-                                context.Configuration.GetValue<string>("Credential:ProductApi:Password")
-                            ),
-                            context.Configuration.GetValue<bool>("UrlsIsEnable:IsCheckProductApi")
-                        ),
-                        new ApiDetail
-                        (
                             "Result api",
                             context.Configuration.GetValue<string>("Urls:ResultApiUrl"),
                             new ApiCredential
