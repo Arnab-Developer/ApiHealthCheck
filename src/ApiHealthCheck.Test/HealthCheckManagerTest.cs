@@ -355,5 +355,61 @@ namespace ApiHealthCheck.Test
 
             Assert.Same(apiDetails, _healthCheckManager.ApiDetails);
         }
+
+        [Fact]
+        public void LogHealthCheckResultNoCredTest()
+        {
+            _mailSendSettings = new MailSendSettings(true);
+
+            _mailSendSettingsOptionsMonitorMock
+                .Setup(s => s.CurrentValue)
+                .Returns(_mailSendSettings);
+
+            _sendMailMock
+                .Setup(s => s.SendMailToCustomer(It.IsAny<string>()))
+                .Verifiable();
+
+            IEnumerable<ApiDetail> apiDetails = new List<ApiDetail>()
+            {
+                new ApiDetail
+                (
+                    "api1",
+                    "https://api1/hc",
+                    null,
+                    true
+                ),
+                new ApiDetail
+                (
+                    "api2",
+                    "https://api2/hc",
+                    new ApiCredential("u2", "p2"),
+                    true
+                )
+            };
+
+            _healthCheckMock
+                .Setup(s => s.IsApiHealthy(apiDetails.ElementAt(0).Url, null))
+                .Returns(true);
+
+            _healthCheckMock
+                .Setup(s => s.IsApiHealthy(apiDetails.ElementAt(1).Url, apiDetails.ElementAt(1).ApiCredential))
+                .Returns(true);
+
+            _healthCheckManager = new HealthCheckManager(
+                _healthCheckMock.Object,
+                _sendMailMock.Object,
+                _mailSendSettingsOptionsMonitorMock.Object,
+                apiDetails,
+                _healthCheckManagerLoggerMock.Object);
+
+            string apiStatusMessage = _healthCheckManager!.LogHealthCheckResult();
+
+            _healthCheckMock.Verify();
+            _sendMailMock.Verify();
+            _sendMailMock.VerifyNoOtherCalls();
+            Assert.Equal(
+                "api1 status is: OK\napi2 status is: OK\n",
+                apiStatusMessage);
+        }
     }
 }

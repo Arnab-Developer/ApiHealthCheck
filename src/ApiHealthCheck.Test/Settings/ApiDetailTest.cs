@@ -18,7 +18,7 @@ namespace ApiHealthCheck.Test.Settings
             );
             Assert.Equal("api1", apiDetail.Name);
             Assert.Equal("https://api1/hc", apiDetail.Url);
-            Assert.Equal("u1", apiDetail.ApiCredential.UserName);
+            Assert.Equal("u1", apiDetail.ApiCredential!.UserName);
             Assert.Equal("p1", apiDetail.ApiCredential.Password);
             Assert.True(apiDetail.IsEnable);
         }
@@ -35,7 +35,7 @@ namespace ApiHealthCheck.Test.Settings
             );
             Assert.Equal("api1", apiDetail.Name);
             Assert.Equal("https://api1/hc", apiDetail.Url);
-            Assert.Equal("u1", apiDetail.ApiCredential.UserName);
+            Assert.Equal("u1", apiDetail.ApiCredential!.UserName);
             Assert.Equal("p1", apiDetail.ApiCredential.Password);
             Assert.False(apiDetail.IsEnable);
         }
