@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ApiHealthCheck.Console
 {
@@ -15,65 +16,23 @@ namespace ApiHealthCheck.Console
             services
                 .AddTransient(options =>
                 {
-                    IEnumerable<ApiDetail> urlDetails = new List<ApiDetail>()
+                    IEnumerable<IConfigurationSection> sections = context.Configuration.GetSection("ApiDetails").GetChildren();
+                    List<ApiDetail> urlDetails = new();
+                    for (var counter = 0; counter < sections.Count(); counter++)
                     {
-                        new ApiDetail
+                        urlDetails.Add(new ApiDetail
                         (
-                            "Product api",
-                            context.Configuration.GetValue<string>("Urls:ProductApiUrl"),
+                            context.Configuration.GetValue<string>($"ApiDetails:{counter}:Name"),
+                            context.Configuration.GetValue<string>($"ApiDetails:{counter}:Url"),
                             new ApiCredential
                             (
-                                context.Configuration.GetValue<string>("Credential:ProductApi:UserName"),
-                                context.Configuration.GetValue<string>("Credential:ProductApi:Password")
+                                context.Configuration.GetValue<string>($"ApiDetails:{counter}:Credential:UserName"),
+                                context.Configuration.GetValue<string>($"ApiDetails:{counter}:Credential:Password")
                             ),
-                            context.Configuration.GetValue<bool>("UrlsIsEnable:IsCheckProductApi")
-                        ),
-                        new ApiDetail
-                        (
-                            "Result api",
-                            context.Configuration.GetValue<string>("Urls:ResultApiUrl"),
-                            new ApiCredential
-                            (
-                                context.Configuration.GetValue<string>("Credential:ResultApi:UserName"),
-                                context.Configuration.GetValue<string>("Credential:ResultApi:Password")
-                            ),
-                            context.Configuration.GetValue<bool>("UrlsIsEnable:IsCheckResultApi")
-                        ),
-                        new ApiDetail
-                        (
-                            "Content api",
-                            context.Configuration.GetValue<string>("Urls:ContentApiUrl"),
-                            new ApiCredential
-                            (
-                                context.Configuration.GetValue<string>("Credential:ContentApi:UserName"),
-                                context.Configuration.GetValue<string>("Credential:ContentApi:Password")
-                            ),
-                            context.Configuration.GetValue<bool>("UrlsIsEnable:IsCheckContentApi")
-                        ),
-                        new ApiDetail
-                        (
-                            "Test api",
-                            context.Configuration.GetValue<string>("Urls:TestApiUrl"),
-                            new ApiCredential
-                            (
-                                context.Configuration.GetValue<string>("Credential:TestApi:UserName"),
-                                context.Configuration.GetValue<string>("Credential:TestApi:Password")
-                            ),
-                            context.Configuration.GetValue<bool>("UrlsIsEnable:IsCheckTestApi")
-                        ),
-                        new ApiDetail
-                        (
-                            "Test player api",
-                            context.Configuration.GetValue<string>("Urls:TestPlayerApiUrl"),
-                            new ApiCredential
-                            (
-                                context.Configuration.GetValue<string>("Credential:TestPlayerApi:UserName"),
-                                context.Configuration.GetValue<string>("Credential:TestPlayerApi:Password")
-                            ),
-                            context.Configuration.GetValue<bool>("UrlsIsEnable:IsCheckTestPlayerApi")
-                        )
-                    };
-                    return urlDetails;
+                            context.Configuration.GetValue<bool>($"ApiDetails:{counter}:IsEnable")
+                        ));
+                    }
+                    return urlDetails.AsEnumerable();
                 })
                 .AddTransient(typeof(IHealthCheckManager), typeof(HealthCheckManager))
                 .AddTransient(typeof(IHealthCheck), typeof(HealthCheck))
