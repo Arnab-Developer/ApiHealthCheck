@@ -68,7 +68,17 @@ namespace ApiHealthCheck.Console
             _logger.HealthCheckResultAction(apiDetail.Name, "start");
             try
             {
-                bool isApiHealthy = _healthCheck.IsApiHealthy(apiDetail.Url, apiDetail.ApiCredential);
+                bool isApiHealthy = false;
+                if (apiDetail.ApiCredential is null ||
+                    string.IsNullOrWhiteSpace(apiDetail.ApiCredential.UserName) ||
+                    string.IsNullOrWhiteSpace(apiDetail.ApiCredential.Password))
+                {
+                    isApiHealthy = _healthCheck.IsApiHealthy(apiDetail.Url);
+                }
+                else
+                {
+                    isApiHealthy = _healthCheck.IsApiHealthy(apiDetail.Url, apiDetail.ApiCredential);
+                }
                 string apiStatusMessage = isApiHealthy ? "OK" : "Error";
                 _logger.HealthCheckResultAction(apiDetail.Name, "end");
                 return $"{apiDetail.Name} status is: {apiStatusMessage}";
