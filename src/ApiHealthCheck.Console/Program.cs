@@ -25,8 +25,10 @@ static IHostBuilder CreateHostBuilder() =>
         })
         .ConfigureLogging((context, builder) =>
         {
-            builder.ClearProviders();
-            builder.AddEventLog(configuration => configuration.SourceName = "Api health check");
+            if (!context.HostingEnvironment.IsDevelopment())
+            {
+                builder.ClearProviders();
+            }
             builder.AddApplicationInsights(context.Configuration.GetValue<string>("ApplicationInsights:Key"));
             builder.AddFilter<ApplicationInsightsLoggerProvider>(
                 typeof(HealthCheckManager).FullName,
