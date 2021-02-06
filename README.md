@@ -17,7 +17,7 @@ For hosting I have below options:
 ## Solution structure
 
 * Core functionality to check api health in class lib.
-* Console app to check api health using the core functionality in the class lib.
+* Console app to host the background task to check api health using the core functionality in the class lib.
 * Unit test.
 
 ## Tech stack
