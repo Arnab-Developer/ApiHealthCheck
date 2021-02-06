@@ -11,7 +11,7 @@ To write tasks which runs in background, I always used Windows Task Scheduler or
 For hosting I have below options:
 
 * I can use a VM and deploy my app as a self contained application in a folder. Run the exe file in it.
-* I can use a VM and install .NET 5 runtime just to run a console application. Deploy my application in a folder. I can open a terminal and use dotnet myapp.dll to run it.
+* I can use a VM and install .NET 5 runtime just to run a console application. Deploy my application in a folder. I can open a terminal and use `dotnet myapp.dll` to run it.
 * I can put the app in a container and deploy in azure container instance or app service or kubernetes. I can put the container image in Docker Hub or Azure Container registry.
 
 ## Solution structure
