@@ -2,7 +2,7 @@
 
 ![.NET](https://github.com/Arnab-Developer/api-health-check/workflows/.NET/badge.svg?branch=main)
 
-Background task application with .NET (with DI, logging, configuration) to check api health.
+This is a small utility app to check api health in a perticular time interval. Add the details of the apis in configuration (like appsettings) to check their health. This is a background task application with .NET (with DI, logging, configuration) to check api health.
 
 To write tasks which runs in background, I always used Windows Task Scheduler or Windows Service. But ASP.NET Core is now more cross platform and these solutions are only for Windows. So recently I found a more cross platform solution which is ASP.NET Core background tasks.
 
