@@ -26,3 +26,6 @@ jobs:
 
     - name: Test
       run: dotnet test src/ApiHealthCheck.sln --no-build --configuration Release
+
+    - name: Docker build
+      run: docker build -f 'src/ApiHealthCheck.ConsoleApp/Dockerfile' -t 45862391/apihealthcheck:v1 .
