@@ -28,10 +28,10 @@ jobs:
       run: dotnet test src/ApiHealthCheck.sln --no-build --configuration Release
 
     - name: Publish
-      run: dotnet publish 'src/ApiHealthCheck.ConsoleApp\ApiHealthCheck.ConsoleApp.csproj' --configuration Release -o 'src/ApiHealthCheck.ConsoleApp/bin/publish'
+      run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration Release -o 'src/ApiHealthCheck.Console/bin/publish'
 
     - name: Docker build
-      run: docker build -f 'src/ApiHealthCheck.ConsoleApp/Dockerfile' -t 45862391/apihealthcheck:v1 .
+      run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:v1 .
 
     - name: Docker login
       run: docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}' 
