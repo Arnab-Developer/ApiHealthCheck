@@ -1,0 +1,34 @@
+name: pr on main
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.101
+
+    - name: Restore
+      run: dotnet restore src/ApiHealthCheck.sln
+
+    - name: Build
+      run: dotnet build src/ApiHealthCheck.sln --configuration Release --no-restore
+
+    - name: Test
+      run: dotnet test src/ApiHealthCheck.sln --no-build --configuration Release
+
+    - name: Publish
+      run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration Release -o 'src/ApiHealthCheck.Console/bin/publish'
+
+    - name: Docker build
+      run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:v1 .
