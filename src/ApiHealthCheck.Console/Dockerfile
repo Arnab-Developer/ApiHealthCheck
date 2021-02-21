@@ -1,4 +1,4 @@
 ﻿FROM mcr.microsoft.com/dotnet/runtime:5.0
-COPY src/ApiHealthCheck.ConsoleApp/bin/publish/ ./app
+COPY src/ApiHealthCheck.Console/bin/publish/ ./app
 WORKDIR /app
-ENTRYPOINT ["dotnet", "ApiHealthCheck.ConsoleApp.dll"]
+ENTRYPOINT ["dotnet", "ApiHealthCheck.Console.dll"]
