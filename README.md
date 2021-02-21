@@ -25,6 +25,12 @@ For hosting I have below options:
 * xUnit for unit testing
 * Visual Studio 2019
 
+## Hosting
+
+This app is in a docker container and stored in DockerHub. This is running in a Azure Container Instance.
+
+https://hub.docker.com/r/45862391/apihealthcheck
+
 ## Contribution
 
 If you want to contribute in this repo then create an issue and let me know how you want to contribute.
