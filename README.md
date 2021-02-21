@@ -6,8 +6,6 @@ This is a small utility app to check api health in a perticular time interval. A
 
 To write tasks which runs in background, I always used Windows Task Scheduler or Windows Service. But ASP.NET Core is now more cross platform and these solutions are only for Windows. So recently I found a more cross platform solution which is ASP.NET Core background tasks.
 
-[Implement background tasks in microservices with IHostedService and the BackgroundService class | Microsoft Docs]: https://docs.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/background-tasks-with-ihostedservice
-
 For hosting I have below options:
 
 * I can use a VM and deploy my app as a self contained application in a folder. Run the exe file in it.
@@ -24,7 +22,7 @@ For hosting I have below options:
 
 * .NET 5
 * C# 9
-* xunit for unit testing
+* xUnit for unit testing
 * Visual Studio 2019
 
 ## Contribution
