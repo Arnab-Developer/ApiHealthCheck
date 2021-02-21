@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build src\ApiHealthCheck.sln --configuration Release --no-restore
     - name: Test
-      run: dotnet test src\ApiHealthCheck.sln --no-build --verbosity normal --configuration Release /p:CollectCoverage=true
+      run: dotnet test src\ApiHealthCheck.sln --no-build --configuration Release
