@@ -13,16 +13,16 @@ jobs:
 
     - uses: actions/checkout@v2
 
-    - name: setup
+    - name: Setup
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.101
 
-    - name: restore
+    - name: Restore
       run: dotnet restore src/ApiHealthCheck.sln
 
-    - name: build
+    - name: Build
       run: dotnet build src/ApiHealthCheck.sln --configuration Release --no-restore
 
-    - name: test
+    - name: Test
       run: dotnet test src/ApiHealthCheck.sln --no-build --configuration Release
