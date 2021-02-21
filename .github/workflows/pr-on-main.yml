@@ -27,5 +27,8 @@ jobs:
     - name: Test
       run: dotnet test src/ApiHealthCheck.sln --no-build --configuration Release
 
+    - name: Publish
+      run: dotnet publish 'src/ApiHealthCheck.ConsoleApp\ApiHealthCheck.ConsoleApp.csproj' --configuration Release -o 'src/ApiHealthCheck.ConsoleApp/bin/publish'
+
     - name: Docker build
       run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:v1 .
