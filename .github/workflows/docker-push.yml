@@ -1,0 +1,40 @@
+name: docker push from main
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-test-docker-push:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: setup
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.101
+
+    - name: restore
+      run: dotnet restore src\ApiHealthCheck.sln
+
+    - name: build
+      run: dotnet build src\ApiHealthCheck.sln --configuration Release --no-restore
+
+    - name: test
+      run: dotnet test src\ApiHealthCheck.sln --no-build --configuration Release
+
+    - name: publish
+      run: dotnet publish 'src\ApiHealthCheck.ConsoleApp\ApiHealthCheck.ConsoleApp.csproj' --configuration Release -o 'src\ApiHealthCheck.ConsoleApp\bin\publish'
+
+    - name: docker build
+      run: docker build -f 'src/ApiHealthCheck.ConsoleApp/Dockerfile' -t 45862391/apihealthcheck:v1 .
+
+    - name: docker login
+      run: docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}' 
+      
+    - name: docker push
+      run: docker push 45862391/apihealthcheck:v1
