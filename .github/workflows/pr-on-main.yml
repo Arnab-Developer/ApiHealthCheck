@@ -19,10 +19,10 @@ jobs:
         dotnet-version: 5.0.101
 
     - name: restore
-      run: dotnet restore src\ApiHealthCheck.sln
+      run: dotnet restore src/ApiHealthCheck.sln
 
     - name: build
-      run: dotnet build src\ApiHealthCheck.sln --configuration Release --no-restore
+      run: dotnet build src/ApiHealthCheck.sln --configuration Release --no-restore
 
     - name: test
-      run: dotnet test src\ApiHealthCheck.sln --no-build --configuration Release
+      run: dotnet test src/ApiHealthCheck.sln --no-build --configuration Release
