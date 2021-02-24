@@ -30,7 +30,7 @@ jobs:
       run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore
 
     - name: Test
-      run: dotnet test src/ApiHealthCheck.sln --no-build --configuration ${{ env.CONFIGURATION }}
+      run: dotnet test --no-build --configuration ${{ env.CONFIGURATION }}
 
     - name: Publish
       run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration ${{ env.CONFIGURATION }} -o 'src/ApiHealthCheck.Console/bin/publish'
