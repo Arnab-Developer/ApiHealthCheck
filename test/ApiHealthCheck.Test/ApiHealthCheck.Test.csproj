@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApiHealthCheck.Console\ApiHealthCheck.Console.csproj" />
+    <ProjectReference Include="..\..\src\ApiHealthCheck.Console\ApiHealthCheck.Console.csproj" />
   </ItemGroup>
 
 </Project>
