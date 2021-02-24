@@ -36,7 +36,7 @@ jobs:
       run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration ${{ env.CONFIGURATION }} -o 'src/ApiHealthCheck.Console/bin/publish'
 
     - name: Docker build
-      run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:v1 .
+      run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:${{ github.run_number }} .
 
     - name: Docker login
       if: ${{ github.event_name == 'push' }}
@@ -44,4 +44,4 @@ jobs:
       
     - name: Docker push
       if: ${{ github.event_name == 'push' }}
-      run: docker push 45862391/apihealthcheck:v1
+      run: docker push 45862391/apihealthcheck:${{ github.run_number }}
