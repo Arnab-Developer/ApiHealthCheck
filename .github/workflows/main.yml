@@ -1,11 +1,13 @@
-name: pr on main
+name: main
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  build-test:
+  build-test-docker-push:
 
     runs-on: ubuntu-latest
 
@@ -32,3 +34,11 @@ jobs:
 
     - name: Docker build
       run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:v1 .
+
+    - name: Docker login
+      if: ${{ github.event_name == 'push' }}
+      run: docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}' 
+      
+    - name: Docker push
+      if: ${{ github.event_name == 'push' }}
+      run: docker push 45862391/apihealthcheck:v1
