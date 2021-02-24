@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 
+#nullable disable
+
 namespace ApiHealthCheck.Console.Loggers
 {
     internal static class HealthCheckManagerLogger
