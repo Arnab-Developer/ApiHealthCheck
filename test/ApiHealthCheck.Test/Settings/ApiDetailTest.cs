@@ -2,7 +2,7 @@
 using ApiHealthCheck.Lib;
 using Xunit;
 
-namespace ApiHealthCheck.Test.Settings
+namespace ApiHealthCheck.ConsoleTest.Settings
 {
     public class ApiDetailTest
     {

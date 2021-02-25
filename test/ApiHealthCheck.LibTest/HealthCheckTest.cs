@@ -2,7 +2,7 @@ using ApiHealthCheck.Lib;
 using System;
 using Xunit;
 
-namespace ApiHealthCheck.Test
+namespace ApiHealthCheck.LibTest
 {
     public class HealthCheckTest
     {

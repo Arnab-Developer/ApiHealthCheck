@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging.ApplicationInsights;
 using System;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("ApiHealthCheck.Test")]
+[assembly: InternalsVisibleTo("ApiHealthCheck.ConsoleTest")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 using IHost host = CreateHostBuilder().Build();

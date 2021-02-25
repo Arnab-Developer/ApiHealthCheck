@@ -1,7 +1,7 @@
 ﻿using ApiHealthCheck.Console.Settings;
 using Xunit;
 
-namespace ApiHealthCheck.Test.Settings
+namespace ApiHealthCheck.ConsoleTest.Settings
 {
     public class MailSendSettingsTest
     {
