@@ -1,4 +1,4 @@
-name: CI
+name: build test deploy
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
   CONFIGURATION: Release
 
 jobs:
-  build:
+  build-test-deploy:
 
     runs-on: ubuntu-latest
 
