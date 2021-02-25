@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiHealthCheck.Lib", "src\ApiHealthCheck.Lib\ApiHealthCheck.Lib.csproj", "{61637051-C4AA-4EDA-AD32-2CECE432D99A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiHealthCheck.ConsoleTest", "test\ApiHealthCheck.Test\ApiHealthCheck.ConsoleTest.csproj", "{126A1B7E-78B2-442F-8D86-91D655F330E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiHealthCheck.ConsoleTest", "test\ApiHealthCheck.ConsoleTest\ApiHealthCheck.ConsoleTest.csproj", "{126A1B7E-78B2-442F-8D86-91D655F330E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiHealthCheck.Console", "src\ApiHealthCheck.Console\ApiHealthCheck.Console.csproj", "{01E1C28C-538B-4D88-80D4-4BBA24DD717D}"
 EndProject
