@@ -47,5 +47,6 @@ jobs:
     - name: Deploy to Azure
       if: ${{ github.event_name == 'pull_request' }}
       run: |
+        az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PWD }}
         az container delete --resource-group apihealthcheck-rg --name apihealthcheck-c3 --yes
         az container create --resource-group apihealthcheck-rg --name apihealthcheck-c3 --image 45862391/apihealthcheck:${{ github.run_number }}
