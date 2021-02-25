@@ -39,13 +39,13 @@ jobs:
       run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:${{ github.run_number }} .
 
     - name: Docker push
-      if: ${{ github.event_name == 'push' }}
+      if: ${{ github.event_name == 'pull_request' }}
       run: |
         docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}'
         docker push 45862391/apihealthcheck:${{ github.run_number }}
 
     - name: Deploy to Azure
-      if: ${{ github.event_name == 'push' }}
+      if: ${{ github.event_name == 'pull_request' }}
       run: |
         az container delete --resource-group apihealthcheck-rg --name apihealthcheck-con1
         az container create --resource-group apihealthcheck-rg --name apihealthcheck-con1 --image 45862391/apihealthcheck:${{ github.run_number }}
