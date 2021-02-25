@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace ApiHealthCheck.Test
+namespace ApiHealthCheck.ConsoleTest
 {
     public class HealthCheckManagerTest
     {
