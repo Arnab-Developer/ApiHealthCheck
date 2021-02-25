@@ -38,10 +38,8 @@ jobs:
     - name: Docker build
       run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:${{ github.run_number }} .
 
-    - name: Docker login
-      if: ${{ github.event_name == 'push' }}
-      run: docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}' 
-      
     - name: Docker push
       if: ${{ github.event_name == 'push' }}
-      run: docker push 45862391/apihealthcheck:${{ github.run_number }}
+      run: |
+        docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}'
+        docker push 45862391/apihealthcheck:${{ github.run_number }}
