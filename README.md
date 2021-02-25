@@ -1,6 +1,6 @@
 # Api health check
 
-[![main](https://github.com/Arnab-Developer/api-health-check/actions/workflows/main.yml/badge.svg)](https://github.com/Arnab-Developer/api-health-check/actions/workflows/main.yml)
+[![CI](https://github.com/Arnab-Developer/api-health-check/actions/workflows/ci.yml/badge.svg)](https://github.com/Arnab-Developer/api-health-check/actions/workflows/ci.yml)
 
 This is a small utility app to check api health in a perticular time interval. Add the details of the apis in configuration (like appsettings) to check their health. This is a background task application with .NET (with DI, logging, configuration) to check api health.
 
