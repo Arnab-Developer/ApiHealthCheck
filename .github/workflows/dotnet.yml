@@ -48,6 +48,6 @@ jobs:
       if: ${{ github.event_name == 'push' }}
       run: |
         az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PWD }}
-        az container delete --resource-group apihealthcheck-rg --name apihealthcheck-c3 --yes
-        az container create --resource-group apihealthcheck-rg --name apihealthcheck-c3 --image 45862391/apihealthcheck:${{ github.run_number }}
+        az container delete --resource-group apihealthcheck-rg --name apihealthcheck-c1 --yes
+        az container create --resource-group apihealthcheck-rg --name apihealthcheck-c1 --image 45862391/apihealthcheck:${{ github.run_number }}
         az logout
