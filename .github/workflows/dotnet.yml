@@ -1,4 +1,4 @@
-name: build test deploy
+name: .NET
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
   CONFIGURATION: Release
 
 jobs:
-  build-test-deploy:
+  build:
 
     runs-on: ubuntu-latest
 
@@ -44,9 +44,10 @@ jobs:
         docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}'
         docker push 45862391/apihealthcheck:${{ github.run_number }}
 
-    - name: Deploy to Azure
+    - name: Azure deploy
       if: ${{ github.event_name == 'push' }}
       run: |
         az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PWD }}
-        az container delete --resource-group apihealthcheck-rg --name apihealthcheck-c3 --yes
-        az container create --resource-group apihealthcheck-rg --name apihealthcheck-c3 --image 45862391/apihealthcheck:${{ github.run_number }}
+        az container delete --resource-group apihealthcheck-rg --name apihealthcheck-c1 --yes
+        az container create --resource-group apihealthcheck-rg --name apihealthcheck-c1 --image 45862391/apihealthcheck:${{ github.run_number }}
+        az logout
