@@ -1,4 +1,4 @@
-name: .NET
+name: CI CD
 
 on:
   push:
@@ -10,44 +10,38 @@ env:
   CONFIGURATION: Release
 
 jobs:
-  build:
-
+  build-test:
     runs-on: ubuntu-latest
-
     steps:
-
     - uses: actions/checkout@v2
-
     - name: Setup
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.101
-
     - name: Restore
       run: dotnet restore
-
     - name: Build
       run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore
-
     - name: Test
       run: dotnet test --no-build --configuration ${{ env.CONFIGURATION }}
-
     - name: Publish
       run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration ${{ env.CONFIGURATION }} -o 'src/ApiHealthCheck.Console/bin/publish'
-
     - name: Docker build
       run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:${{ github.run_number }} .
-
     - name: Docker push
       if: ${{ github.event_name == 'push' }}
       run: |
         docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}'
         docker push 45862391/apihealthcheck:${{ github.run_number }}
 
-    - name: Azure deploy
-      if: ${{ github.event_name == 'push' }}
+  azure-deploy:
+    if: ${{ github.event_name == 'push' }}  
+    runs-on: ubuntu-latest
+    needs: build-test
+    steps:
+    - name: Azure deploy      
       run: |
         az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PWD }}
         az container delete --resource-group apihealthcheck-rg --name apihealthcheck-c1 --yes
         az container create --resource-group apihealthcheck-rg --name apihealthcheck-c1 --image 45862391/apihealthcheck:${{ github.run_number }}
-        az logout
+        az logout 
