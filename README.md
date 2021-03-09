@@ -5,7 +5,3 @@ This is a small utility app to check api health in a perticular time interval. A
 This app is in a docker container and stored in DockerHub.
 
 https://hub.docker.com/r/45862391/apihealthcheck
-
-## Contribution
-
-If you want to contribute then you can work on any issues which is tagged with 'help wanted'. If you want to work on something else then create a new issue. Before starting your work please let me know on which issue you are going to work.
