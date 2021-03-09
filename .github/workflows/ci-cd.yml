@@ -43,11 +43,11 @@ jobs:
     - name: Publish
       run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration ${{ env.CONFIGURATION }} -o 'src/ApiHealthCheck.Console/bin/publish'
     - name: Docker build
-      run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t docker.pkg.github.com/arnab-developer/apihealthcheck:1.0.0 .
+      run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t arnab-developer/apihealthcheck/apihealthcheck:1.0.0 .
     - name: Docker push
       run: |
         docker login https://docker.pkg.github.com -u Arnab-Developer -p '${{ secrets.GITHUB_TOKEN }}'
-        docker push docker.pkg.github.com/arnab-developer/apihealthcheck:1.0.0
+        docker push https://docker.pkg.github.com arnab-developer/apihealthcheck/apihealthcheck:1.0.0
 
   dockerhub-deploy:
     if: ${{ github.event_name == 'release' }}
