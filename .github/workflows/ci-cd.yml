@@ -47,7 +47,7 @@ jobs:
     - name: Docker push
       run: |
         docker login https://docker.pkg.github.com -u Arnab-Developer -p '${{ secrets.GITHUB_TOKEN }}'
-        docker push docker.pkg.github.com/arnab-developer/api-healt-hcheck/apihealthcheck:1.0.0
+        docker push docker.pkg.github.com/arnab-developer/api-health-check/apihealthcheck:1.0.0
 
   dockerhub-deploy:
     if: ${{ github.event_name == 'release' }}
