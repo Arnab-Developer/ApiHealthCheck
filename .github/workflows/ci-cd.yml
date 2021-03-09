@@ -5,6 +5,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  release:
+    types: [created]
 
 env:
   CONFIGURATION: Release
@@ -24,24 +26,47 @@ jobs:
       run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore
     - name: Test
       run: dotnet test --no-build --configuration ${{ env.CONFIGURATION }}
-    - name: Publish
-      run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration ${{ env.CONFIGURATION }} -o 'src/ApiHealthCheck.Console/bin/publish'
-    - name: Docker build
-      run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:${{ github.run_number }} .
-    - name: Docker push
-      if: ${{ github.event_name == 'push' }}
-      run: |
-        docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}'
-        docker push 45862391/apihealthcheck:${{ github.run_number }}
 
-  azure-deploy:
-    if: ${{ github.event_name == 'push' }}  
+  github-package-deploy:
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     needs: build-test
     steps:
-    - name: Azure deploy      
+    - name: Checkout code
+      uses: actions/checkout@v2      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.101    
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Publish
+      run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration ${{ env.CONFIGURATION }} -o 'src/ApiHealthCheck.Console/bin/publish'
+    - name: Docker build
+      run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t docker.pkg.github.com/arnab-developer/apihealthcheck/apihealthcheck:1.0.0 .
+    - name: Docker push
       run: |
-        az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PWD }}
-        az container delete --resource-group apihealthcheck-rg --name apihealthcheck-c1 --yes
-        az container create --resource-group apihealthcheck-rg --name apihealthcheck-c1 --image 45862391/apihealthcheck:${{ github.run_number }}
-        az logout 
+        docker login https://docker.pkg.github.com -u Arnab-Developer -p '${{ secrets.GITHUB_TOKEN }}'
+        docker push docker.pkg.github.com/arnab-developer/apihealthcheck/apihealthcheck:1.0.0
+
+  dockerhub-deploy:
+    if: ${{ github.event_name == 'release' }}
+    runs-on: ubuntu-latest
+    needs: build-test
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.101    
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Publish
+      run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration ${{ env.CONFIGURATION }} -o 'src/ApiHealthCheck.Console/bin/publish'
+    - name: Docker build
+      run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:1.0.0 .
+    - name: Docker push
+      run: |
+        docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}'
+        docker push 45862391/apihealthcheck:1.0.0 
