@@ -46,8 +46,8 @@ jobs:
       run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t docker.pkg.github.com/arnab-developer/api-health-check/apihealthcheck:1.0.0 .
     - name: Docker push
       run: |
-        docker login https://docker.pkg.github.com -u Arnab-Developer -p '${{ secrets.GITHUB_TOKEN }}'
-        docker push docker.pkg.github.com/arnab-developer/api-health-check/apihealthcheck:1.0.0
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://docker.pkg.github.com -u Arnab-Developer --password-stdin
+        docker push docker.pkg.github.com/arnab-developer/api-health-check/apihealthcheck:1.1.0
 
   dockerhub-deploy:
     if: ${{ github.event_name == 'release' }}
@@ -68,5 +68,5 @@ jobs:
       run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:1.0.0 .
     - name: Docker push
       run: |
-        docker login -u 45862391 -p '${{ secrets.DOCKERHUBPWD }}'
-        docker push 45862391/apihealthcheck:1.0.0 
+        echo "${{ secrets.DOCKERHUBPWD }}" | docker login -u 45862391 --password-stdin
+        docker push 45862391/apihealthcheck:1.1.0 
