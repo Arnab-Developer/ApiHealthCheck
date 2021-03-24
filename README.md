@@ -12,7 +12,7 @@ to check their health status. It uses an Azure Application Insights to log api h
 - Update the appsettings.json with the reference of the Application Insights.
 - Create a Azure Container Instence with the dockerhub image.
 
-You can find the logs in Application Insights.
+You can find the health check logs in Application Insights.
 
 ## Docker image
 This app is in a docker container and stored in dockerhub.
