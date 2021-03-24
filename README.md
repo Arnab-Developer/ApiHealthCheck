@@ -6,6 +6,7 @@ This is a background task application with .NET (with DI, logging, configuration
 app to check api health in a perticular time interval. Add the details of the apis in configuration (like appsettings) 
 to check their health status. It uses an Azure Application Insights to log api health status.
 
+# Docker image
 This app is in a docker container and stored in DockerHub.
 
 https://hub.docker.com/r/45862391/apihealthcheck
