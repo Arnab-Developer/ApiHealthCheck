@@ -8,7 +8,7 @@ to check their health status. It uses an Azure Application Insights to log api h
 
 ## How to use
 - Update the appsettings.json with api details to check their health.
-- Create a Azure Application Insights. 
+- Create an Azure Application Insights resource. 
 - Update the appsettings.json with the reference of the Application Insights.
 - Create a Azure Container Instence with the dockerhub image.
 
