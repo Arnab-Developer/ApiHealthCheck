@@ -14,7 +14,7 @@ to check their health status. It uses an Azure Application Insights to log api h
 You can find the logs in Application Insights.
 
 ## Docker image
-This app is in a docker container and stored in DockerHub.
+This app is in a docker container and stored in dockerhub.
 
 https://hub.docker.com/r/45862391/apihealthcheck
 
