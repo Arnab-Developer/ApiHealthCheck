@@ -13,7 +13,7 @@ Create an Azure Application Insights resource.
 - Update the appsettings.json with the reference of the Application Insights.
 ```
 "ApplicationInsights": {
-  "Key": "308057ed-109c-484c-9383-2cd4a3ca83c2",
+  "Key": "",
   "LogLevel": {
     "Default": "Information",
     "Microsoft": "Error"
@@ -43,7 +43,7 @@ If you want to test different APIs then follow the below steps.
 - Update the appsettings.json with the reference of the Application Insights.
 ```
 "ApplicationInsights": {
-  "Key": "308057ed-109c-484c-9383-2cd4a3ca83c2",
+  "Key": "",
   "LogLevel": {
     "Default": "Information",
     "Microsoft": "Error"
