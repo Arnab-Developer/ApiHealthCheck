@@ -6,7 +6,7 @@ This is a background task application with .NET (with DI, logging, configuration
 app to check API health in a perticular time interval. Add the details of the APIs in configuration (like appsettings) 
 to check their health status. It uses an Azure Application Insights to log API health status.
 
-## How to use
+## Run the app as is
 This app uses some example APIs for health check. If you want to run the app as is then follow the below steps.
 
 - Create an Azure Application Insights resource. 
@@ -22,6 +22,7 @@ This app uses some example APIs for health check. If you want to run the app as 
 - Create a Azure Container Instence with the dockerhub image. https://hub.docker.com/r/45862391/apihealthcheck
 - You can find the health check logs in Application Insights.
 
+## Test your own APIs
 If you want to test different APIs then follow the below steps.
 
 - Update the appsettings.json with API details to check their health.
