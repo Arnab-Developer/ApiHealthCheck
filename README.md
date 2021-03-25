@@ -61,5 +61,5 @@ This app is in a docker container and stored in dockerhub.
 
 https://hub.docker.com/r/45862391/apihealthcheck
 
-## Contribution
+## Contributing
 Please read the contribution related things [here](https://github.com/Arnab-Developer/api-health-check/blob/main/Contribution.md).
