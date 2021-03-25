@@ -9,7 +9,7 @@ to check their health status. It uses an Azure Application Insights to log API h
 ## How to use
 This app uses some example APIs for health check. If you want to run the app as is then follow the below steps.
 
-Create an Azure Application Insights resource. 
+- Create an Azure Application Insights resource. 
 - Update the appsettings.json with the reference of the Application Insights.
 ```
 "ApplicationInsights": {
