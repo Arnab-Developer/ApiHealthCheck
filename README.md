@@ -7,8 +7,25 @@ app to check API health in a perticular time interval. Add the details of the AP
 to check their health status. It uses an Azure Application Insights to log API health status.
 
 ## How to use
-This app uses some example APIs for health check.
+This app uses some example APIs for health check. If you want to run the app as is then follow the below steps.
 
+Create an Azure Application Insights resource. 
+- Update the appsettings.json with the reference of the Application Insights.
+```
+"ApplicationInsights": {
+  "Key": "308057ed-109c-484c-9383-2cd4a3ca83c2",
+  "LogLevel": {
+    "Default": "Information",
+    "Microsoft": "Error"
+  }
+```
+- Create a Azure Container Instence with the dockerhub image.
+
+You can find the health check logs in Application Insights.
+
+If you want to test different APIs then follow the below steps.
+
+- Update the appsettings.json with API details to check their health.
 ```
 "ApiDetails": [
   {
@@ -19,40 +36,9 @@ This app uses some example APIs for health check.
     "Password": ""
     },
     "IsEnable": true
-  },
-  {
-    "Name": "Google",
-    "Url": "https://google.com",
-    "Credential": {
-    "UserName": "",
-    "Password": ""
-    },
-    "IsEnable": true
-  },
-  {
-    "Name": "sfsdf",
-    "Url": "https://sdfsdf.com",
-    "Credential": {
-    "UserName": "",
-    "Password": ""
-    },
-    "IsEnable": false
-  },
-  {
-    "Name": "Googrrrrrrrle",
-    "Url": "https://rrrrrrrrrrrrgoogle.com",
-    "Credential": {
-    "UserName": "",
-    "Password": ""
-    },
-    "IsEnable": true
   }
 ]
 ```
-
-If you want to test different APIs then follow the below steps.
-
-- Update the appsettings.json with API details to check their health.
 - Create an Azure Application Insights resource. 
 - Update the appsettings.json with the reference of the Application Insights.
 ```
