@@ -11,7 +11,7 @@ This app uses some example APIs for health check. If you want to run the app as 
 
 - Create an Azure Application Insights resource. 
 - Update the appsettings.json with the reference of the Application Insights.
-```json
+```javascript
 "ApplicationInsights": {
   "Key": "",
   "LogLevel": {
