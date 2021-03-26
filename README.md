@@ -19,7 +19,9 @@ This app uses some example APIs for health check. If you want to run the app as 
     "Microsoft": "Error"
   }
 ```
-- Create a Azure Container Instence with the dockerhub image. https://hub.docker.com/r/45862391/apihealthcheck
+- Build the app and create docker image.
+- Store the docker image in any container registry.
+- Create a Azure Container Instence with the docker image from that container registry.
 
 You can find the health check logs in Application Insights.
 
