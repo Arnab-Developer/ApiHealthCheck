@@ -1,5 +1,6 @@
 # API health check
 [![CI CD](https://github.com/Arnab-Developer/api-health-check/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Arnab-Developer/api-health-check/actions/workflows/ci-cd.yml)
+[![CodeQL](https://github.com/Arnab-Developer/api-health-check/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Arnab-Developer/api-health-check/actions/workflows/codeql-analysis.yml)
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/45862391/apihealthcheck)
 
 This is a background task application with .NET (with DI, logging, configuration) to check API health. A small utility 
