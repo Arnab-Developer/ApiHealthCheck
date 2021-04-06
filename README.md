@@ -59,7 +59,7 @@ If you want to test different APIs then follow the below steps.
 You can find the health check logs in Application Insights.
 
 ## Docker image
-This app is in a docker container and stored in dockerhub.
+This app is in a docker image and stored in dockerhub.
 
 https://hub.docker.com/r/45862391/apihealthcheck
 
