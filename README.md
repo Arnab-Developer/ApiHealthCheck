@@ -1,5 +1,5 @@
 # API health check
-[![CI CD](https://github.com/Arnab-Developer/api-health-check/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Arnab-Developer/api-health-check/actions/workflows/ci-cd.yml)
+[![CI CD](https://github.com/Arnab-Developer/ApiHealthCheck/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Arnab-Developer/ApiHealthCheck/actions/workflows/ci-cd.yml)
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/45862391/apihealthcheck)
 
 This is a background task application with .NET (with DI, logging, configuration) to check API health. A small utility 
@@ -64,4 +64,4 @@ This app is in a docker image and stored in dockerhub.
 https://hub.docker.com/r/45862391/apihealthcheck
 
 ## Contributing
-Please read the contribution related things [here](https://github.com/Arnab-Developer/api-health-check/blob/main/Contributing.md).
+Please read the contribution related things [here](https://github.com/Arnab-Developer/ApiHealthCheck/blob/main/Contributing.md).
