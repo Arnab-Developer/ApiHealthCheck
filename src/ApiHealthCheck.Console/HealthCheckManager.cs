@@ -15,7 +15,7 @@ namespace ApiHealthCheck.Console
         private readonly ISendMail _sendMail;
         private readonly IEnumerable<ApiDetail> _urlDetails;
         private readonly ILogger<HealthCheckManager> _logger;
-        private readonly MailSendSettings _mailSendSettings;
+        private readonly IOptionsMonitor<MailSendSettings> _mailSendSettingsOptionsMonitor;
 
         public HealthCheckManager(
             IHealthCheck healthCheck,
@@ -27,7 +27,7 @@ namespace ApiHealthCheck.Console
             _healthCheck = healthCheck;
             _sendMail = sendMail;
             _urlDetails = urlDetails;
-            _mailSendSettings = mailSendSettingsOptionsMonitor.CurrentValue;
+            _mailSendSettingsOptionsMonitor = mailSendSettingsOptionsMonitor;
             _logger = logger;
         }
 
@@ -48,7 +48,7 @@ namespace ApiHealthCheck.Console
             {
                 _logger.ApiStatusMessage(apiStatusMessages.ToString());
 
-                if (_mailSendSettings.IsMailSendEnable)
+                if (_mailSendSettingsOptionsMonitor.CurrentValue.IsMailSendEnable)
                 {
                     try
                     {

@@ -10,7 +10,7 @@ namespace ApiHealthCheck.Console
     internal class HealthCheckService : IHostedService, IDisposable
     {
         private Timer? _timer;
-        private readonly ExecutionSettings _executionSettings;
+        private readonly IOptionsMonitor<ExecutionSettings> _executionSettingsOptionsMonitor;
         private readonly IHealthCheckManager _healthCheckManager;
 
         public HealthCheckService(
@@ -18,13 +18,13 @@ namespace ApiHealthCheck.Console
             IOptionsMonitor<ExecutionSettings> executionSettingsOptionsMonitor)
         {
             _healthCheckManager = healthCheckManager;
-            _executionSettings = executionSettingsOptionsMonitor.CurrentValue;
+            _executionSettingsOptionsMonitor = executionSettingsOptionsMonitor;
         }
 
         public Task StartAsync(CancellationToken stoppingToken)
         {
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromSeconds(_executionSettings.ExecutionFrequency));
+                TimeSpan.FromSeconds(_executionSettingsOptionsMonitor.CurrentValue.ExecutionFrequency));
             return Task.CompletedTask;
         }
 
