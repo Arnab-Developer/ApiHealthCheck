@@ -9,8 +9,15 @@ want to contribute. If your work is approved then only start your work.
 
 You need Visual Studio 2019 and ASP.NET 5 to work on this project locally.
 
-- If you find an issue then comment on that to let me know. Or if you want to work
-on something else then create a new issue to let me know the details.
+## Getting started
+
+- Make sure you have a [GitHub account](https://github.com/signup/free).
+- Search for an existing issue.
+- If you find an issue then comment on that to let me know.
+- Or if you can't find then create a new issue.
+
+## Work on the issue
+
 - If your issue is approved then fork the repo.
 - Clone the forked repo and create a new branch from `main`. 
 - Set the upstream to the original repo `main` branch.
@@ -19,5 +26,13 @@ on something else then create a new issue to let me know the details.
 - Create a pull request from the new branch to upstream `main`.
 - Your pull request will be reviewed.
 - After the review, if everything is fine then it will be merged.
+
+## Create a pull request
+
+- Create a pull request from the new branch to upstream `main` branch.
+- Your pull request will be reviewed.
+- After the review, if everything is fine then it will be merged.
+
+Thanks for your contribution :smiley:
 
 > Note: pull request can be rejected if the project don't need the proposed changes anymore.
