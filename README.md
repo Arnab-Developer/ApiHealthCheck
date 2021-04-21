@@ -1,4 +1,5 @@
 # API health check
+
 [![CI CD](https://github.com/Arnab-Developer/ApiHealthCheck/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Arnab-Developer/ApiHealthCheck/actions/workflows/ci-cd.yml)
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/45862391/apihealthcheck)
 
@@ -7,6 +8,7 @@ app to check API health in a perticular time interval. Add the details of the AP
 to check their health status. It uses an Azure Application Insights to log API health status.
 
 ## Run the app as is
+
 This app uses some example APIs for health check. If you want to run the app as is then follow the below steps.
 
 - Create an Azure Application Insights resource. 
@@ -26,6 +28,7 @@ This app uses some example APIs for health check. If you want to run the app as 
 You can find the health check logs in Application Insights.
 
 ## Test your own APIs
+
 If you want to test different APIs then follow the below steps.
 
 - Update the appsettings.json with API details to check their health.
@@ -59,6 +62,16 @@ If you want to test different APIs then follow the below steps.
 You can find the health check logs in Application Insights.
 
 ## Docker image
+
 This app is in a docker image and stored in dockerhub.
 
 https://hub.docker.com/r/45862391/apihealthcheck
+
+## License
+
+[MIT License](https://github.com/Arnab-Developer/ApiHealthCheck/blob/main/LICENSE)
+
+## Contributing
+
+Please read [this](https://github.com/Arnab-Developer/ApiHealthCheck/blob/main/CONTRIBUTING.md) 
+for contribution related guidelines.
