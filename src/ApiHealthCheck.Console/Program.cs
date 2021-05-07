@@ -19,6 +19,7 @@ static IHostBuilder CreateHostBuilder() =>
         .ConfigureServices((context, services) =>
         {
             services
+                .AddHttpClient()
                 .AddServices(context)
                 .ConfigureSettings(context.Configuration)
                 .AddHostedService<HealthCheckService>();

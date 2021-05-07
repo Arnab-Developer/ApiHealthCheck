@@ -7,9 +7,16 @@ namespace ApiHealthCheck.Lib
 {
     public class HealthCheck : IHealthCheck
     {
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public HealthCheck(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
         bool IHealthCheck.IsApiHealthy(string url, ApiCredential? credential)
         {
-            HttpClient httpClient = new();
+            HttpClient httpClient = _httpClientFactory.CreateClient();
             if (credential != null)
             {
                 var byteArray = Encoding.ASCII.GetBytes($"{credential.UserName}:{credential.Password}");
