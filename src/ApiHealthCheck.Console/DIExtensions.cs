@@ -1,5 +1,4 @@
-﻿using ApiHealthCheck.Console.Settings;
-using ApiHealthCheck.Lib;
+﻿using ApiHealthCheck.Lib;
 using ApiHealthCheck.Lib.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

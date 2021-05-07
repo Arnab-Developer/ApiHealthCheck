@@ -1,6 +1,6 @@
 ﻿using ApiHealthCheck.Console.Loggers;
-using ApiHealthCheck.Console.Settings;
 using ApiHealthCheck.Lib;
+using ApiHealthCheck.Lib.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
