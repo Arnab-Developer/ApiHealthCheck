@@ -1,8 +1,8 @@
-﻿using ApiHealthCheck.Console.Settings;
-using ApiHealthCheck.Lib;
+﻿using ApiHealthCheck.Lib;
+using ApiHealthCheck.Lib.Settings;
 using Xunit;
 
-namespace ApiHealthCheck.ConsoleTest.Settings
+namespace ApiHealthCheck.LibTest.Settings
 {
     public class ApiDetailTest
     {
