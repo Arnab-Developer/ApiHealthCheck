@@ -7,6 +7,8 @@ This is a background task application with .NET (with DI, logging, configuration
 app to check API health in a perticular time interval. Add the details of the APIs in configuration (like appsettings) 
 to check their health status. It uses an Azure Application Insights to log API health status.
 
+You need Visual Studio 2019 and ASP.NET 5 to work on this project locally.
+
 ## Run the app as is
 
 This app uses some example APIs for health check. If you want to run the app as is then follow the below steps.
