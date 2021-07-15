@@ -68,12 +68,3 @@ You can find the health check logs in Application Insights.
 This app is in a docker image and stored in dockerhub.
 
 https://hub.docker.com/r/45862391/apihealthcheck
-
-## License
-
-[MIT License](https://github.com/Arnab-Developer/ApiHealthCheck/blob/main/LICENSE)
-
-## Contributing
-
-Please read [this](https://github.com/Arnab-Developer/ApiHealthCheck/blob/main/CONTRIBUTING.md) 
-for contribution related guidelines.
