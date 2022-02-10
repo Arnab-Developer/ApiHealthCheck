@@ -1,28 +1,27 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 
-namespace ApiHealthCheck.Lib
+namespace ApiHealthCheck.Lib;
+
+public class HealthCheck : IHealthCheck
 {
-    public class HealthCheck : IHealthCheck
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    public HealthCheck(IHttpClientFactory httpClientFactory)
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        _httpClientFactory = httpClientFactory;
+    }
 
-        public HealthCheck(IHttpClientFactory httpClientFactory)
+    bool IHealthCheck.IsApiHealthy(string url, ApiCredential? credential)
+    {
+        HttpClient httpClient = _httpClientFactory.CreateClient();
+        if (credential != null)
         {
-            _httpClientFactory = httpClientFactory;
+            var byteArray = Encoding.ASCII.GetBytes($"{credential.UserName}:{credential.Password}");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Basic", Convert.ToBase64String(byteArray));
         }
-
-        bool IHealthCheck.IsApiHealthy(string url, ApiCredential? credential)
-        {
-            HttpClient httpClient = _httpClientFactory.CreateClient();
-            if (credential != null)
-            {
-                var byteArray = Encoding.ASCII.GetBytes($"{credential.UserName}:{credential.Password}");
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                    "Basic", Convert.ToBase64String(byteArray));
-            }
-            HttpResponseMessage consultationApiResponseMessage = httpClient.GetAsync(url).Result;
-            return consultationApiResponseMessage.IsSuccessStatusCode;
-        }
+        HttpResponseMessage consultationApiResponseMessage = httpClient.GetAsync(url).Result;
+        return consultationApiResponseMessage.IsSuccessStatusCode;
     }
 }

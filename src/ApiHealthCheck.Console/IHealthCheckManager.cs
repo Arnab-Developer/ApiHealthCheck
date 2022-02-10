@@ -1,11 +1,10 @@
 ﻿using ApiHealthCheck.Lib.Settings;
 
-namespace ApiHealthCheck.Console
-{
-    internal interface IHealthCheckManager
-    {
-        IEnumerable<ApiDetail> ApiDetails { get; }
+namespace ApiHealthCheck.Console;
 
-        string LogHealthCheckResult();
-    }
+internal interface IHealthCheckManager
+{
+    IEnumerable<ApiDetail> ApiDetails { get; }
+
+    string LogHealthCheckResult();
 }

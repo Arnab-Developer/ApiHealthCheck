@@ -1,7 +1,6 @@
-﻿namespace ApiHealthCheck.Lib
+﻿namespace ApiHealthCheck.Lib;
+
+public interface IHealthCheck
 {
-    public interface IHealthCheck
-    {
-        bool IsApiHealthy(string url, ApiCredential? credential = null);
-    }
+    bool IsApiHealthy(string url, ApiCredential? credential = null);
 }

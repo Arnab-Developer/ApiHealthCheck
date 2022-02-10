@@ -1,17 +1,16 @@
-﻿namespace ApiHealthCheck.Lib.Settings
+﻿namespace ApiHealthCheck.Lib.Settings;
+
+public record ExecutionSettings
 {
-    public record ExecutionSettings
+    public int ExecutionFrequency { get; init; }
+
+    public ExecutionSettings()
     {
-        public int ExecutionFrequency { get; init; }
+        ExecutionFrequency = 0;
+    }
 
-        public ExecutionSettings()
-        {
-            ExecutionFrequency = 0;
-        }
-
-        public ExecutionSettings(int executionFrequency)
-        {
-            ExecutionFrequency = executionFrequency;
-        }
+    public ExecutionSettings(int executionFrequency)
+    {
+        ExecutionFrequency = executionFrequency;
     }
 }
