@@ -27,6 +27,7 @@
             EventId = 4,
             Level = LogLevel.Error,
             Message = "Mail sending error")]
-        public static partial void MailSendingError(this ILogger<HealthCheckManager> logger, Exception ex);
+        public static partial void MailSendingError(
+            this ILogger<HealthCheckManager> logger, Exception ex);
     }
 }
