@@ -80,7 +80,7 @@ jobs:
     - name: Docker push
       run: |
         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u Arnab-Developer --password-stdin
-        docker push docker.pkg.github.com/arnab-developer/apihealthcheck/apihealthcheck:1.1.3
+        docker push ghcr.io/arnab-developer/apihealthcheck/apihealthcheck:1.1.3
         docker logout ghcr.io
 
   dockerhub-deploy:
