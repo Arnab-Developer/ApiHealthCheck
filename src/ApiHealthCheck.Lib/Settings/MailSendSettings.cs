@@ -1,17 +1,16 @@
-﻿namespace ApiHealthCheck.Lib.Settings
+﻿namespace ApiHealthCheck.Lib.Settings;
+
+public record MailSendSettings
 {
-    public record MailSendSettings
+    public bool IsMailSendEnable { get; init; }
+
+    public MailSendSettings()
     {
-        public bool IsMailSendEnable { get; init; }
+        IsMailSendEnable = false;
+    }
 
-        public MailSendSettings()
-        {
-            IsMailSendEnable = false;
-        }
-
-        public MailSendSettings(bool isMailSendEnable)
-        {
-            IsMailSendEnable = isMailSendEnable;
-        }
+    public MailSendSettings(bool isMailSendEnable)
+    {
+        IsMailSendEnable = isMailSendEnable;
     }
 }

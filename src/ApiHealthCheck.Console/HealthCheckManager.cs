@@ -1,93 +1,89 @@
 ﻿using ApiHealthCheck.Console.Loggers;
 using ApiHealthCheck.Lib;
 using ApiHealthCheck.Lib.Settings;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
-namespace ApiHealthCheck.Console
+namespace ApiHealthCheck.Console;
+
+internal class HealthCheckManager : IHealthCheckManager
 {
-    internal class HealthCheckManager : IHealthCheckManager
+    private readonly IHealthCheck _healthCheck;
+    private readonly ISendMail _sendMail;
+    private readonly IEnumerable<ApiDetail> _urlDetails;
+    private readonly ILogger<HealthCheckManager> _logger;
+    private readonly IOptionsMonitor<MailSendSettings> _mailSendSettingsOptionsMonitor;
+
+    public HealthCheckManager(
+        IHealthCheck healthCheck,
+        ISendMail sendMail,
+        IOptionsMonitor<MailSendSettings> mailSendSettingsOptionsMonitor,
+        IEnumerable<ApiDetail> urlDetails,
+        ILogger<HealthCheckManager> logger)
     {
-        private readonly IHealthCheck _healthCheck;
-        private readonly ISendMail _sendMail;
-        private readonly IEnumerable<ApiDetail> _urlDetails;
-        private readonly ILogger<HealthCheckManager> _logger;
-        private readonly IOptionsMonitor<MailSendSettings> _mailSendSettingsOptionsMonitor;
+        _healthCheck = healthCheck;
+        _sendMail = sendMail;
+        _urlDetails = urlDetails;
+        _mailSendSettingsOptionsMonitor = mailSendSettingsOptionsMonitor;
+        _logger = logger;
+    }
 
-        public HealthCheckManager(
-            IHealthCheck healthCheck,
-            ISendMail sendMail,
-            IOptionsMonitor<MailSendSettings> mailSendSettingsOptionsMonitor,
-            IEnumerable<ApiDetail> urlDetails,
-            ILogger<HealthCheckManager> logger)
+    IEnumerable<ApiDetail> IHealthCheckManager.ApiDetails => _urlDetails;
+
+    string IHealthCheckManager.LogHealthCheckResult()
+    {
+        StringBuilder apiStatusMessages = new(string.Empty);
+        foreach (ApiDetail urlDetail in _urlDetails)
         {
-            _healthCheck = healthCheck;
-            _sendMail = sendMail;
-            _urlDetails = urlDetails;
-            _mailSendSettingsOptionsMonitor = mailSendSettingsOptionsMonitor;
-            _logger = logger;
+            if (urlDetail.IsEnable)
+            {
+                apiStatusMessages.Append(GetApiStatusMessage(urlDetail));
+                apiStatusMessages.Append('\n');
+            }
         }
-
-        IEnumerable<ApiDetail> IHealthCheckManager.ApiDetails => _urlDetails;
-
-        string IHealthCheckManager.LogHealthCheckResult()
+        if (apiStatusMessages.ToString() != string.Empty)
         {
-            StringBuilder apiStatusMessages = new(string.Empty);
-            foreach (ApiDetail urlDetail in _urlDetails)
-            {
-                if (urlDetail.IsEnable)
-                {
-                    apiStatusMessages.Append(GetApiStatusMessage(urlDetail));
-                    apiStatusMessages.Append('\n');
-                }
-            }
-            if (apiStatusMessages.ToString() != string.Empty)
-            {
-                _logger.ApiStatusMessage(apiStatusMessages.ToString());
+            _logger.ApiStatusMessage(apiStatusMessages.ToString());
 
-                if (_mailSendSettingsOptionsMonitor.CurrentValue.IsMailSendEnable)
+            if (_mailSendSettingsOptionsMonitor.CurrentValue.IsMailSendEnable)
+            {
+                try
                 {
-                    try
-                    {
-                        _sendMail.SendMailToCustomer(apiStatusMessages.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.MailSendingError(ex);
-                    }
+                    _sendMail.SendMailToCustomer(apiStatusMessages.ToString());
+                }
+                catch (Exception ex)
+                {
+                    _logger.MailSendingError(ex);
                 }
             }
-            return apiStatusMessages.ToString();
         }
+        return apiStatusMessages.ToString();
+    }
 
-        private string GetApiStatusMessage(ApiDetail apiDetail)
+    private string GetApiStatusMessage(ApiDetail apiDetail)
+    {
+        _logger.HealthCheckResultAction(apiDetail.Name, "start");
+        try
         {
-            _logger.HealthCheckResultAction(apiDetail.Name, "start");
-            try
+            bool isApiHealthy = false;
+            if (apiDetail.ApiCredential is null ||
+                string.IsNullOrWhiteSpace(apiDetail.ApiCredential.UserName) ||
+                string.IsNullOrWhiteSpace(apiDetail.ApiCredential.Password))
             {
-                bool isApiHealthy = false;
-                if (apiDetail.ApiCredential is null ||
-                    string.IsNullOrWhiteSpace(apiDetail.ApiCredential.UserName) ||
-                    string.IsNullOrWhiteSpace(apiDetail.ApiCredential.Password))
-                {
-                    isApiHealthy = _healthCheck.IsApiHealthy(apiDetail.Url);
-                }
-                else
-                {
-                    isApiHealthy = _healthCheck.IsApiHealthy(apiDetail.Url, apiDetail.ApiCredential);
-                }
-                string apiStatusMessage = isApiHealthy ? "OK" : "Error";
-                _logger.HealthCheckResultAction(apiDetail.Name, "end");
-                return $"{apiDetail.Name} status is: {apiStatusMessage}";
+                isApiHealthy = _healthCheck.IsApiHealthy(apiDetail.Url);
             }
-            catch (Exception ex)
+            else
             {
-                _logger.HealthCheckError(apiDetail.Name, ex);
-                return $"{apiDetail.Name} status is: Error";
+                isApiHealthy = _healthCheck.IsApiHealthy(apiDetail.Url, apiDetail.ApiCredential);
             }
+            string apiStatusMessage = isApiHealthy ? "OK" : "Error";
+            _logger.HealthCheckResultAction(apiDetail.Name, "end");
+            return $"{apiDetail.Name} status is: {apiStatusMessage}";
+        }
+        catch (Exception ex)
+        {
+            _logger.HealthCheckError(apiDetail.Name, ex);
+            return $"{apiDetail.Name} status is: Error";
         }
     }
 }
