@@ -4,9 +4,6 @@ using ApiHealthCheck.Lib.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace ApiHealthCheck.ConsoleTest

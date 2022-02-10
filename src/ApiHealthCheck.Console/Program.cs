@@ -1,10 +1,5 @@
 ﻿using ApiHealthCheck.Console;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.ApplicationInsights;
-using System;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("ApiHealthCheck.ConsoleTest")]

@@ -1,10 +1,5 @@
 ﻿using ApiHealthCheck.Lib;
 using ApiHealthCheck.Lib.Settings;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ApiHealthCheck.Console
 {

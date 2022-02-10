@@ -1,10 +1,7 @@
 ﻿using ApiHealthCheck.Console.Loggers;
 using ApiHealthCheck.Lib;
 using ApiHealthCheck.Lib.Settings;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace ApiHealthCheck.Console

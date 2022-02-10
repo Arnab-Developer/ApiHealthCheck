@@ -1,5 +1,4 @@
 ﻿using ApiHealthCheck.Lib.Settings;
-using System.Collections.Generic;
 
 namespace ApiHealthCheck.Console
 {

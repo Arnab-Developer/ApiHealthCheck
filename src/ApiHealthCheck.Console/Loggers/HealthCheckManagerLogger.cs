@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-
-#nullable disable
+﻿#nullable disable
 
 namespace ApiHealthCheck.Console.Loggers
 {
