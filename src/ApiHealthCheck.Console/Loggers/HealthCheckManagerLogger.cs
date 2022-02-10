@@ -1,47 +1,32 @@
-﻿#nullable disable
-
-namespace ApiHealthCheck.Console.Loggers
+﻿namespace ApiHealthCheck.Console.Loggers
 {
-    internal static class HealthCheckManagerLogger
+    internal static partial class HealthCheckManagerLogger
     {
-        private static readonly Action<ILogger, string, string, Exception> _healthCheckResultAction = LoggerMessage.Define<string, string>(
-            LogLevel.Debug,
-            new EventId(1, nameof(HealthCheckResultAction)),
-            "{apiName} health check result {action}");
+        [LoggerMessage(
+            EventId = 1,
+            Level = LogLevel.Debug,
+            Message = "{apiName} health check result {action}")]
+        public static partial void HealthCheckResultAction(
+            this ILogger<HealthCheckManager> logger, string apiName, string action);
 
-        private static readonly Action<ILogger, string, Exception> _healthCheckError = LoggerMessage.Define<string>(
-            LogLevel.Error,
-            new EventId(1, nameof(HealthCheckError)),
-            "Health check error in {apiName}.");
+        [LoggerMessage(
+            EventId = 2,
+            Level = LogLevel.Error,
+            Message = "Health check error in {apiName}")]
+        public static partial void HealthCheckError(
+            this ILogger<HealthCheckManager> logger, string apiName, Exception ex);
 
-        private static readonly Action<ILogger, string, Exception> _apiStatusMessage = LoggerMessage.Define<string>(
-            LogLevel.Information,
-            new EventId(1, nameof(ApiStatusMessage)),
-            "{apiStatusMessage}.");
+        [LoggerMessage(
+            EventId = 3,
+            Level = LogLevel.Information,
+            Message = "{apiStatusMessage}")]
+        public static partial void ApiStatusMessage(
+            this ILogger<HealthCheckManager> logger, string apiStatusMessage);
 
-        private static readonly Action<ILogger, Exception> _mailSendingError = LoggerMessage.Define(
-            LogLevel.Error,
-            new EventId(1, nameof(MailSendingError)),
-            "Mail sending error.");
-
-        public static void HealthCheckResultAction(this ILogger<HealthCheckManager> logger, string apiName, string action)
-        {
-            _healthCheckResultAction(logger, apiName, action, default);
-        }
-
-        public static void HealthCheckError(this ILogger<HealthCheckManager> logger, string apiName, Exception ex)
-        {
-            _healthCheckError(logger, apiName, ex);
-        }
-
-        public static void ApiStatusMessage(this ILogger<HealthCheckManager> logger, string apiStatusMessage)
-        {
-            _apiStatusMessage(logger, apiStatusMessage, default);
-        }
-
-        public static void MailSendingError(this ILogger<HealthCheckManager> logger, Exception ex)
-        {
-            _mailSendingError(logger, ex);
-        }
+        [LoggerMessage(
+            EventId = 4,
+            Level = LogLevel.Error,
+            Message = "Mail sending error")]
+        public static partial void MailSendingError(this ILogger<HealthCheckManager> logger, Exception ex);
     }
 }
