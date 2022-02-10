@@ -1,4 +1,5 @@
 name: CI CD
+
 on:
   push:
     branches: [ main ]
@@ -6,24 +7,31 @@ on:
     branches: [ main ]
   release:
     types: [created]
+
 env:
   CONFIGURATION: Release
+
 jobs:
   build-test:
     runs-on: ubuntu-latest
     name: Build and test
     steps:
     - uses: actions/checkout@v2
+
     - name: Setup
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+
     - name: Restore
       run: dotnet restore
+
     - name: Build
       run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore
+
     - name: Test
       run: dotnet test --no-build --configuration ${{ env.CONFIGURATION }}
+
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
@@ -34,14 +42,18 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
         languages: ${{ matrix.language }}
+
     - name: Autobuild
       uses: github/codeql-action/autobuild@v1
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
+
   github-package-deploy:
     if: ${{ github.event_name == 'push' }}
     name: GitHub package deploy
@@ -49,22 +61,28 @@ jobs:
     needs: [build-test, analyze]
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2      
+      uses: actions/checkout@v2
+      
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Publish
       run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration ${{ env.CONFIGURATION }} -o 'src/ApiHealthCheck.Console/bin/publish'
+
     - name: Docker build
       run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t ghcr.io/arnab-developer/apihealthcheck/apihealthcheck:1.1.3 .
+
     - name: Docker push
       run: |
         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u Arnab-Developer --password-stdin
         docker push docker.pkg.github.com/arnab-developer/apihealthcheck/apihealthcheck:1.1.3
         docker logout ghcr.io
+
   dockerhub-deploy:
     if: ${{ github.event_name == 'release' }}
     name: Dockerhub deploy
@@ -75,17 +93,22 @@ jobs:
       url: https://hub.docker.com/r/45862391/apihealthcheck
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2      
+      uses: actions/checkout@v2   
+      
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Publish
       run: dotnet publish 'src/ApiHealthCheck.Console\ApiHealthCheck.Console.csproj' --configuration ${{ env.CONFIGURATION }} -o 'src/ApiHealthCheck.Console/bin/publish'
+
     - name: Docker build
       run: docker build -f 'src/ApiHealthCheck.Console/Dockerfile' -t 45862391/apihealthcheck:1.1.3 .
+
     - name: Docker push
       run: |
         echo "${{ secrets.DOCKERHUB_PWD }}" | docker login -u 45862391 --password-stdin
