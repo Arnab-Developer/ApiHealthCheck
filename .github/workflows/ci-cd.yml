@@ -10,6 +10,7 @@ on:
 
 env:
   CONFIGURATION: Release
+  DOTNET: 6.0.x
 
 jobs:
   build-test:
@@ -21,7 +22,7 @@ jobs:
     - name: Setup
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: ${{ env.DOTNET }}
 
     - name: Restore
       run: dotnet restore
@@ -66,7 +67,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: ${{ env.DOTNET }}
 
     - name: Restore dependencies
       run: dotnet restore
@@ -98,7 +99,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: ${{ env.DOTNET }}
 
     - name: Restore dependencies
       run: dotnet restore
