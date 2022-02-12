@@ -1,4 +1,5 @@
 ﻿using ApiHealthCheck.Lib;
+using Tynamix.ObjectFiller;
 using Xunit;
 
 namespace ApiHealthCheck.LibTest;
@@ -8,9 +9,15 @@ public class ApiCredentialTest
     [Fact]
     public void ProductApiCredentialSuccessTest()
     {
-        ApiCredential apiCredential = new("u1", "p1");
+        string expectedUserName = Randomizer<string>.Create();
+        string expectedPassword = Randomizer<string>.Create();
 
-        Assert.Equal("u1", apiCredential.UserName);
-        Assert.Equal("p1", apiCredential.Password);
+        ApiCredential apiCredential = new(expectedUserName, expectedPassword);
+
+        string actualUserName = apiCredential.UserName;
+        string actualPassword = apiCredential.Password;
+
+        Assert.Equal(expectedUserName, actualUserName);
+        Assert.Equal(expectedPassword, actualPassword);
     }
 }
