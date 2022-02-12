@@ -1,4 +1,5 @@
 ﻿using ApiHealthCheck.Lib.Settings;
+using Tynamix.ObjectFiller;
 using Xunit;
 
 namespace ApiHealthCheck.LibTest.Settings;
@@ -8,25 +9,25 @@ public class MailSettingsTest
     [Fact]
     public void MailSettingsSuccessTest()
     {
-        MailSettings mailSettings = new
-        (
-            "from email",
-            "to email",
-            "email sub",
-            "email host",
-            105,
-            "smtp user",
-            "smtp pwd",
-            "true"
-        );
+        string From = Randomizer<string>.Create();
+        string To = Randomizer<string>.Create();
+        string Subject = Randomizer<string>.Create();
+        string Host = Randomizer<string>.Create();
+        int Port = Randomizer<int>.Create();
+        string UserName = Randomizer<string>.Create();
+        string Password = Randomizer<string>.Create();
+        string EnableSsl = Randomizer<bool>.Create().ToString();
 
-        Assert.Equal("from email", mailSettings.From);
-        Assert.Equal("to email", mailSettings.To);
-        Assert.Equal("email sub", mailSettings.Subject);
-        Assert.Equal("email host", mailSettings.Host);
-        Assert.Equal(105, mailSettings.Port);
-        Assert.Equal("smtp user", mailSettings.UserName);
-        Assert.Equal("smtp pwd", mailSettings.Password);
-        Assert.Equal("true", mailSettings.EnableSsl);
+        MailSettings mailSettings
+            = new(From, To, Subject, Host, Port, UserName, Password, EnableSsl);
+
+        Assert.Equal(From, mailSettings.From);
+        Assert.Equal(To, mailSettings.To);
+        Assert.Equal(Subject, mailSettings.Subject);
+        Assert.Equal(Host, mailSettings.Host);
+        Assert.Equal(Port, mailSettings.Port);
+        Assert.Equal(UserName, mailSettings.UserName);
+        Assert.Equal(Password, mailSettings.Password);
+        Assert.Equal(EnableSsl, mailSettings.EnableSsl);
     }
 }
