@@ -1,6 +1,7 @@
 ﻿using ApiHealthCheck.Console;
 using ApiHealthCheck.Lib;
 using ApiHealthCheck.Lib.Settings;
+using DeepCopy;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -39,22 +40,22 @@ public class HealthCheckManagerTest
             .Verifiable();
 
         IEnumerable<ApiDetail> apiDetails = new List<ApiDetail>()
-            {
-                new ApiDetail
-                (
-                    "api1",
-                    "https://api1/hc",
-                    new ApiCredential("u1", "p1"),
-                    true
-                ),
-                new ApiDetail
-                (
-                    "api2",
-                    "https://api2/hc",
-                    new ApiCredential("u2", "p2"),
-                    true
-                )
-            };
+        {
+            new ApiDetail
+            (
+                "api1",
+                "https://api1/hc",
+                new ApiCredential("u1", "p1"),
+                true
+            ),
+            new ApiDetail
+            (
+                "api2",
+                "https://api2/hc",
+                new ApiCredential("u2", "p2"),
+                true
+            )
+        };
 
         foreach (ApiDetail apiDetail in apiDetails)
         {
@@ -72,9 +73,14 @@ public class HealthCheckManagerTest
 
         string apiStatusMessage = _healthCheckManager!.LogHealthCheckResult();
 
-        _healthCheckMock.Verify();
-        _sendMailMock.Verify();
-        _sendMailMock.VerifyNoOtherCalls();
+        _healthCheckMock
+            .Verify(v => v.IsApiHealthy(It.IsAny<string>(), It.IsAny<ApiCredential>()),
+                Times.Exactly(apiDetails.Count()));
+
+        _sendMailMock
+            .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
+                Times.Once);
+
         Assert.Equal(
             "api1 status is: OK\napi2 status is: OK\n",
             apiStatusMessage);
@@ -94,22 +100,22 @@ public class HealthCheckManagerTest
             .Verifiable();
 
         IEnumerable<ApiDetail> apiDetails = new List<ApiDetail>()
-            {
-                new ApiDetail
-                (
-                    "api1",
-                    "https://api1/hc",
-                    new ApiCredential("u1", "p1"),
-                    true
-                ),
-                new ApiDetail
-                (
-                    "api2",
-                    "https://api2/hc",
-                    new ApiCredential("u2", "p2"),
-                    true
-                )
-            };
+        {
+            new ApiDetail
+            (
+                "api1",
+                "https://api1/hc",
+                new ApiCredential("u1", "p1"),
+                true
+            ),
+            new ApiDetail
+            (
+                "api2",
+                "https://api2/hc",
+                new ApiCredential("u2", "p2"),
+                true
+            )
+        };
 
         _healthCheckMock
             .Setup(s => s.IsApiHealthy(apiDetails.ElementAt(0).Url, apiDetails.ElementAt(0).ApiCredential))
@@ -128,9 +134,14 @@ public class HealthCheckManagerTest
 
         string apiStatusMessage = _healthCheckManager!.LogHealthCheckResult();
 
-        _healthCheckMock.Verify();
-        _sendMailMock.Verify();
-        _sendMailMock.VerifyNoOtherCalls();
+        _healthCheckMock
+            .Verify(v => v.IsApiHealthy(It.IsAny<string>(), It.IsAny<ApiCredential>()),
+                Times.Exactly(apiDetails.Count()));
+
+        _sendMailMock
+            .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
+                Times.Once);
+
         Assert.Equal(
             "api1 status is: OK\napi2 status is: Error\n",
             apiStatusMessage);
@@ -150,22 +161,22 @@ public class HealthCheckManagerTest
             .Verifiable();
 
         IEnumerable<ApiDetail> apiDetails = new List<ApiDetail>()
-            {
-                new ApiDetail
-                (
-                    "api1",
-                    "https://api1/hc",
-                    new ApiCredential("u1", "p1"),
-                    true
-                ),
-                new ApiDetail
-                (
-                    "api2",
-                    "https://api2/hc",
-                    new ApiCredential("u2", "p2"),
-                    true
-                )
-            };
+        {
+            new ApiDetail
+            (
+                "api1",
+                "https://api1/hc",
+                new ApiCredential("u1", "p1"),
+                true
+            ),
+            new ApiDetail
+            (
+                "api2",
+                "https://api2/hc",
+                new ApiCredential("u2", "p2"),
+                true
+            )
+        };
 
         _healthCheckMock
             .Setup(s => s.IsApiHealthy(apiDetails.ElementAt(0).Url, apiDetails.ElementAt(0).ApiCredential))
@@ -184,9 +195,14 @@ public class HealthCheckManagerTest
 
         string apiStatusMessage = _healthCheckManager!.LogHealthCheckResult();
 
-        _healthCheckMock.Verify();
-        _sendMailMock.Verify();
-        _sendMailMock.VerifyNoOtherCalls();
+        _healthCheckMock
+            .Verify(v => v.IsApiHealthy(It.IsAny<string>(), It.IsAny<ApiCredential>()),
+                Times.Exactly(apiDetails.Count()));
+
+        _sendMailMock
+            .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
+                Times.Once);
+
         Assert.Equal(
             "api1 status is: Error\napi2 status is: OK\n",
             apiStatusMessage);
@@ -206,22 +222,22 @@ public class HealthCheckManagerTest
             .Verifiable();
 
         IEnumerable<ApiDetail> apiDetails = new List<ApiDetail>()
-            {
-                new ApiDetail
-                (
-                    "api1",
-                    "https://api1/hc",
-                    new ApiCredential("u1", "p1"),
-                    true
-                ),
-                new ApiDetail
-                (
-                    "api2",
-                    "https://api2/hc",
-                    new ApiCredential("u2", "p2"),
-                    true
-                )
-            };
+        {
+            new ApiDetail
+            (
+                "api1",
+                "https://api1/hc",
+                new ApiCredential("u1", "p1"),
+                true
+            ),
+            new ApiDetail
+            (
+                "api2",
+                "https://api2/hc",
+                new ApiCredential("u2", "p2"),
+                true
+            )
+        };
 
         _healthCheckMock
             .Setup(s => s.IsApiHealthy(apiDetails.ElementAt(0).Url, apiDetails.ElementAt(0).ApiCredential))
@@ -240,8 +256,14 @@ public class HealthCheckManagerTest
 
         string apiStatusMessage = _healthCheckManager!.LogHealthCheckResult();
 
-        _healthCheckMock.Verify();
-        _sendMailMock.VerifyNoOtherCalls();
+        _healthCheckMock
+            .Verify(v => v.IsApiHealthy(It.IsAny<string>(), It.IsAny<ApiCredential>()),
+                Times.Exactly(apiDetails.Count()));
+
+        _sendMailMock
+            .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
+                Times.Never);
+
         Assert.Equal(
             "api1 status is: Error\napi2 status is: OK\n",
             apiStatusMessage);
@@ -261,22 +283,22 @@ public class HealthCheckManagerTest
             .Verifiable();
 
         IEnumerable<ApiDetail> apiDetails = new List<ApiDetail>()
-            {
-                new ApiDetail
-                (
-                    "api1",
-                    "https://api1/hc",
-                    new ApiCredential("u1", "p1"),
-                    false
-                ),
-                new ApiDetail
-                (
-                    "api2",
-                    "https://api2/hc",
-                    new ApiCredential("u2", "p2"),
-                    true
-                )
-            };
+        {
+            new ApiDetail
+            (
+                "api1",
+                "https://api1/hc",
+                new ApiCredential("u1", "p1"),
+                false
+            ),
+            new ApiDetail
+            (
+                "api2",
+                "https://api2/hc",
+                new ApiCredential("u2", "p2"),
+                true
+            )
+        };
 
         _healthCheckMock
             .Setup(s => s.IsApiHealthy(apiDetails.ElementAt(0).Url, apiDetails.ElementAt(0).ApiCredential))
@@ -295,8 +317,14 @@ public class HealthCheckManagerTest
 
         string apiStatusMessage = _healthCheckManager!.LogHealthCheckResult();
 
-        _healthCheckMock.Verify();
-        _sendMailMock.VerifyNoOtherCalls();
+        _healthCheckMock
+            .Verify(v => v.IsApiHealthy(It.IsAny<string>(), It.IsAny<ApiCredential>()),
+                Times.Exactly(apiDetails.Count(apiDetail => apiDetail.IsEnable)));
+
+        _sendMailMock
+            .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
+                Times.Never);
+
         Assert.Equal(
             "api2 status is: OK\n",
             apiStatusMessage);
@@ -316,22 +344,24 @@ public class HealthCheckManagerTest
             .Verifiable();
 
         IEnumerable<ApiDetail> apiDetails = new List<ApiDetail>()
-            {
-                new ApiDetail
-                (
-                    "api1",
-                    "https://api1/hc",
-                    new ApiCredential("u1", "p1"),
-                    false
-                ),
-                new ApiDetail
-                (
-                    "api2",
-                    "https://api2/hc",
-                    new ApiCredential("u2", "p2"),
-                    true
-                )
-            };
+        {
+            new ApiDetail
+            (
+                "api1",
+                "https://api1/hc",
+                new ApiCredential("u1", "p1"),
+                false
+            ),
+            new ApiDetail
+            (
+                "api2",
+                "https://api2/hc",
+                new ApiCredential("u2", "p2"),
+                true
+            )
+        };
+
+        IEnumerable<ApiDetail> expectedApiDetails = DeepCopier.Copy(apiDetails);
 
         _healthCheckMock
             .Setup(s => s.IsApiHealthy(apiDetails.ElementAt(0).Url, apiDetails.ElementAt(0).ApiCredential))
@@ -367,22 +397,22 @@ public class HealthCheckManagerTest
             .Verifiable();
 
         IEnumerable<ApiDetail> apiDetails = new List<ApiDetail>()
-            {
-                new ApiDetail
-                (
-                    "api1",
-                    "https://api1/hc",
-                    null,
-                    true
-                ),
-                new ApiDetail
-                (
-                    "api2",
-                    "https://api2/hc",
-                    new ApiCredential("u2", "p2"),
-                    true
-                )
-            };
+        {
+            new ApiDetail
+            (
+                "api1",
+                "https://api1/hc",
+                null,
+                true
+            ),
+            new ApiDetail
+            (
+                "api2",
+                "https://api2/hc",
+                new ApiCredential("u2", "p2"),
+                true
+            )
+        };
 
         _healthCheckMock
             .Setup(s => s.IsApiHealthy(apiDetails.ElementAt(0).Url, null))
@@ -401,9 +431,14 @@ public class HealthCheckManagerTest
 
         string apiStatusMessage = _healthCheckManager!.LogHealthCheckResult();
 
-        _healthCheckMock.Verify();
-        _sendMailMock.Verify();
-        _sendMailMock.VerifyNoOtherCalls();
+        _healthCheckMock
+            .Verify(v => v.IsApiHealthy(It.IsAny<string>(), It.IsAny<ApiCredential>()),
+                Times.Exactly(apiDetails.Count(apiDetail => apiDetail.IsEnable)));
+
+        _sendMailMock
+            .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
+                Times.Once);
+
         Assert.Equal(
             "api1 status is: OK\napi2 status is: OK\n",
             apiStatusMessage);
