@@ -24,21 +24,4 @@ public class ApiDetailTest
         Assert.Equal(expectedApiCredential.Password, apiDetail.ApiCredential.Password);
         Assert.Equal(expectedIsEnable, apiDetail.IsEnable);
     }
-
-    [Fact]
-    public void ApiDetailFalseTest()
-    {
-        ApiDetail apiDetail = new
-        (
-            "api1",
-            "https://api1/hc",
-            new ApiCredential("u1", "p1"),
-            false
-        );
-        Assert.Equal("api1", apiDetail.Name);
-        Assert.Equal("https://api1/hc", apiDetail.Url);
-        Assert.Equal("u1", apiDetail.ApiCredential!.UserName);
-        Assert.Equal("p1", apiDetail.ApiCredential.Password);
-        Assert.False(apiDetail.IsEnable);
-    }
 }
