@@ -1,7 +1,7 @@
 ﻿using ApiHealthCheck.Lib;
 using ApiHealthCheck.Lib.Settings;
-using Xunit;
 using Tynamix.ObjectFiller;
+using Xunit;
 
 namespace ApiHealthCheck.LibTest.Settings;
 
@@ -15,7 +15,7 @@ public class ApiDetailTest
         ApiCredential expectedApiCredential = new(Randomizer<string>.Create(), Randomizer<string>.Create());
         bool expectedIsEnable = Randomizer<bool>.Create();
 
-        ApiDetail apiDetail = 
+        ApiDetail apiDetail =
             new(expectedName, expectedUri, expectedApiCredential, expectedIsEnable);
 
         Assert.Equal(expectedName, apiDetail.Name);
