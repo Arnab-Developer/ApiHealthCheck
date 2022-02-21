@@ -85,6 +85,9 @@ public class HealthCheckManagerTest
             .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
                 Times.Once);
 
+        _healthCheckMock.VerifyNoOtherCalls();
+        _sendMailMock.VerifyNoOtherCalls();
+
         Assert.Equal(
             "api1 status is: OK\napi2 status is: OK\n",
             apiStatusMessage);
@@ -149,6 +152,9 @@ public class HealthCheckManagerTest
         _sendMailMock
             .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
                 Times.Once);
+
+        _healthCheckMock.VerifyNoOtherCalls();
+        _sendMailMock.VerifyNoOtherCalls();
 
         Assert.Equal(
             "api1 status is: OK\napi2 status is: Error\n",
@@ -215,6 +221,9 @@ public class HealthCheckManagerTest
             .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
                 Times.Once);
 
+        _healthCheckMock.VerifyNoOtherCalls();
+        _sendMailMock.VerifyNoOtherCalls();
+
         Assert.Equal(
             "api1 status is: Error\napi2 status is: OK\n",
             apiStatusMessage);
@@ -275,6 +284,9 @@ public class HealthCheckManagerTest
         _sendMailMock
             .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
                 Times.Never);
+
+        _healthCheckMock.VerifyNoOtherCalls();
+        _sendMailMock.VerifyNoOtherCalls();
 
         Assert.Equal(
             "api1 status is: Error\napi2 status is: OK\n",
@@ -337,6 +349,9 @@ public class HealthCheckManagerTest
             .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
                 Times.Never);
 
+        _healthCheckMock.VerifyNoOtherCalls();
+        _sendMailMock.VerifyNoOtherCalls();
+
         Assert.Equal(
             "api2 status is: OK\n",
             apiStatusMessage);
@@ -397,6 +412,17 @@ public class HealthCheckManagerTest
         string apiStatusMessage = _healthCheckManager!.LogHealthCheckResult();
 
         Assert.Same(apiDetails, _healthCheckManager.ApiDetails);
+
+        _healthCheckMock
+            .Verify(v => v.IsApiHealthy(It.IsAny<string>(), It.IsAny<ApiCredential>()),
+                Times.Exactly(apiDetails.Count(apiDetail => apiDetail.IsEnable)));
+
+        _sendMailMock
+            .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
+                Times.Never);
+
+        _healthCheckMock.VerifyNoOtherCalls();
+        _sendMailMock.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -458,6 +484,9 @@ public class HealthCheckManagerTest
         _sendMailMock
             .Verify(v => v.SendMailToCustomer(It.IsAny<string>()),
                 Times.Once);
+
+        _healthCheckMock.VerifyNoOtherCalls();
+        _sendMailMock.VerifyNoOtherCalls();
 
         Assert.Equal(
             "api1 status is: OK\napi2 status is: OK\n",
