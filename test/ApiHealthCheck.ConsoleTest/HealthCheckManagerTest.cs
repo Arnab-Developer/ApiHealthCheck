@@ -20,8 +20,8 @@ public class HealthCheckManagerTest
 
     public HealthCheckManagerTest()
     {
-        _healthCheckMock = new Mock<IHealthCheck>();
-        _sendMailMock = new Mock<ISendMail>();
+        _healthCheckMock = new Mock<IHealthCheck>(MockBehavior.Strict);
+        _sendMailMock = new Mock<ISendMail>(MockBehavior.Strict);
         _healthCheckManagerLoggerMock = new Mock<ILogger<HealthCheckManager>>();
         _mailSendSettingsOptionsMonitorMock = new Mock<IOptionsMonitor<MailSendSettings>>();
     }
@@ -31,11 +31,15 @@ public class HealthCheckManagerTest
     {
         _mailSendSettings = new MailSendSettings(true);
 
+        MockSequence mockSequence = new();
+
         _mailSendSettingsOptionsMonitorMock
+            .InSequence(mockSequence)
             .Setup(s => s.CurrentValue)
             .Returns(_mailSendSettings);
 
         _sendMailMock
+            .InSequence(mockSequence)
             .Setup(s => s.SendMailToCustomer(It.IsAny<string>()))
             .Verifiable();
 
@@ -91,11 +95,15 @@ public class HealthCheckManagerTest
     {
         _mailSendSettings = new MailSendSettings(true);
 
+        MockSequence mockSequence = new();
+
         _mailSendSettingsOptionsMonitorMock
+            .InSequence(mockSequence)
             .Setup(s => s.CurrentValue)
             .Returns(_mailSendSettings);
 
         _sendMailMock
+            .InSequence(mockSequence)
             .Setup(s => s.SendMailToCustomer(It.IsAny<string>()))
             .Verifiable();
 
@@ -152,11 +160,15 @@ public class HealthCheckManagerTest
     {
         _mailSendSettings = new MailSendSettings(true);
 
+        MockSequence mockSequence = new();
+
         _mailSendSettingsOptionsMonitorMock
+            .InSequence(mockSequence)
             .Setup(s => s.CurrentValue)
             .Returns(_mailSendSettings);
 
         _sendMailMock
+            .InSequence(mockSequence)
             .Setup(s => s.SendMailToCustomer(It.IsAny<string>()))
             .Verifiable();
 
@@ -335,11 +347,15 @@ public class HealthCheckManagerTest
     {
         _mailSendSettings = new MailSendSettings(false);
 
+        MockSequence mockSequence = new();
+
         _mailSendSettingsOptionsMonitorMock
+            .InSequence(mockSequence)
             .Setup(s => s.CurrentValue)
             .Returns(_mailSendSettings);
 
         _sendMailMock
+            .InSequence(mockSequence)
             .Setup(s => s.SendMailToCustomer(It.IsAny<string>()))
             .Verifiable();
 
@@ -388,11 +404,15 @@ public class HealthCheckManagerTest
     {
         _mailSendSettings = new MailSendSettings(true);
 
+        MockSequence mockSequence = new();
+
         _mailSendSettingsOptionsMonitorMock
+            .InSequence(mockSequence)
             .Setup(s => s.CurrentValue)
             .Returns(_mailSendSettings);
 
         _sendMailMock
+            .InSequence(mockSequence)
             .Setup(s => s.SendMailToCustomer(It.IsAny<string>()))
             .Verifiable();
 
