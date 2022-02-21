@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="DeepCopy" Version="1.0.3" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="Tynamix.ObjectFiller" Version="1.5.7" />
     <PackageReference Include="xunit" Version="2.4.1" />
