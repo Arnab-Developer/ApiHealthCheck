@@ -11,7 +11,7 @@ on:
 env:
   CONFIGURATION: Release
   DOTNET: 6.0.x
-  DOCKER_VERSION: 1.1.5
+  DOCKER_VERSION: 1.1.6
 
 jobs:
   build-test:
