@@ -59,6 +59,8 @@ jobs:
     name: GitHub package deploy
     runs-on: ubuntu-latest
     needs: [build-test, analyze]
+    permissions:
+      packages: write
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
